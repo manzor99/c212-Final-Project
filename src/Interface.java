@@ -1,6 +1,8 @@
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,7 +26,6 @@ public class Interface {
 	
 	public Interface(){ //login page
 		
-		listen = new UserListener();
 		frame = new JFrame("Roccozon"); //its a pun on amazon
 		panel = new JPanel();
 		username = new JTextField();
@@ -36,6 +37,9 @@ public class Interface {
 		
 		//frame.setLayout(null);
 		//panel.setLayout(null);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		panel.setLocation(new Point(0, 0));
 		panel.setPreferredSize(new Dimension(800,800));
 		panel.setSize(new Dimension(800,800));
@@ -53,7 +57,7 @@ public class Interface {
 		passLbl.setPreferredSize(new Dimension(100, 30));
 		usernameLbl.setPreferredSize(new Dimension(100, 30));
 		
-		
+		listen = new UserListener(this);
 		
 		panel.add(username);
 		panel.add(pass);
@@ -81,7 +85,27 @@ public class Interface {
 	
 	public void sellerPage(){}
 	
-	
+	public class UserListener implements ActionListener{
+		Interface face;
+		
+		public UserListener(Interface face){
+			
+			this.face = face;
+			face.login.addActionListener(this);
+			face.createAcc.addActionListener(this);
+			
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(e.getSource() == face.login)
+				System.out.println("login");
+			else if(e.getSource() == face.createAcc)
+				System.out.println("create");
+		}
+
+	}
 	
 	
 }
