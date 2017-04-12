@@ -106,7 +106,7 @@ public class Interface {
 	
 	public void sellerPage(){}
 	
-	public class UserListener implements ActionListener{
+	private class UserListener implements ActionListener{
 		Interface face;
 		
 		public UserListener(Interface face){
