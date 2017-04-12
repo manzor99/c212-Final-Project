@@ -1,13 +1,14 @@
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -24,10 +25,30 @@ public class Interface {
 	JLabel passLbl;
 	UserListener listen;
 	
+	JMenuBar menuBar;
+	
+	JMenu navigate;
+		JMenuItem mLogin;
+		JMenuItem mCreate;
+		
+	JMenu help;
+	JMenu info;
+	
 	public Interface(){ //login page
 		
 		frame = new JFrame("Roccozon"); //its a pun on amazon
 		panel = new JPanel();
+		
+		navigate = new JMenu("Navigate");
+		menuBar = new JMenuBar();
+		
+		menuBar.add(navigate);
+		
+		menuBar.setVisible(true);
+		frame.setJMenuBar(menuBar);
+		frame.add(menuBar);
+		navigate = new JMenu();
+		
 		username = new JTextField();
 		pass = new JPasswordField(); 
 		login = new JButton("Login");
@@ -73,7 +94,7 @@ public class Interface {
 		
 		frame.setPreferredSize(new Dimension(800, 800));
 		frame.setSize(800, 800);
-		
+		frame.pack();
 		frame.setVisible(true);
 	}
 	
