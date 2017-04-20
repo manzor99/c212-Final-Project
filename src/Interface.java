@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class Interface {
 
@@ -36,9 +37,17 @@ public class Interface {
 	
 	public Interface(){ //login page
 		
-		frame = new JFrame("Roccozon"); //its a pun on amazon
-		panel = new JPanel();
+		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
+		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
 		
+		SpringLayout layout = new SpringLayout();
+		panel = new JPanel();
+		//frame
+		frame = new JFrame("Roccozon"); //its a pun on amazon
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//end frame
+		
+		//menuBar
 		navigate = new JMenu("Navigate");
 		menuBar = new JMenuBar();
 		
@@ -48,52 +57,124 @@ public class Interface {
 		frame.setJMenuBar(menuBar);
 		frame.add(menuBar);
 		navigate = new JMenu();
+		//end menuBar
 		
+		
+		
+		
+		//username
 		username = new JTextField();
-		pass = new JPasswordField(); 
-		login = new JButton("Login");
-		createAcc = new JButton("Create Account");
-		usernameLbl = new JLabel("Username: ");
-		passLbl = new JLabel("Password: ");
-		
-		//frame.setLayout(null);
-		//panel.setLayout(null);
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		panel.setLocation(new Point(0, 0));
-		panel.setPreferredSize(new Dimension(800,800));
-		panel.setSize(new Dimension(800,800));
-		
-		pass.setLocation(100, 40);
-		username.setLocation(100, 0);
-		//passLbl.setLocation(0, 40);
-		//usernameLbl.setLocation(0, 0);
-		username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
-		pass.setPreferredSize(new Dimension(100, 30));
+		//username.setLocation(100, 100);
 		username.setSize(new Dimension(100, 30));
-		pass.setSize(new Dimension(100, 30));
-		//passLbl.setLocation(new Point(100, 100));
-		//usernameLbl.setLocation(new Point(0, 0));
-		passLbl.setPreferredSize(new Dimension(100, 30));
+		layout.putConstraint(SpringLayout.WEST, username,
+                100,
+                SpringLayout.WEST, panel);
+		
+		layout.putConstraint(SpringLayout.NORTH, username,
+                50,
+                SpringLayout.NORTH, panel);
+		//end username
+		
+		//usernameLbl
+		usernameLbl = new JLabel("Username: ");
+		username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
 		usernameLbl.setPreferredSize(new Dimension(100, 30));
+			
+		layout.putConstraint(SpringLayout.WEST, usernameLbl,
+		        30,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
+		        50,
+		        SpringLayout.NORTH, panel);
+		//end usernameLbl
 		
-		listen = new UserListener(this);
+		//pass
+		pass = new JPasswordField(); 
+		pass.setSize(new Dimension(100, 30));
+		pass.setPreferredSize(new Dimension(100, 30));
 		
+		layout.putConstraint(SpringLayout.WEST, pass,
+		        100,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, pass,
+		        100,
+		        SpringLayout.NORTH, panel);
+		
+		//end pass
+		
+		//passLbl
+		passLbl = new JLabel("Password: ");
+		passLbl.setLocation(0, 40);
+		passLbl.setPreferredSize(new Dimension(100, 30));
+		
+		layout.putConstraint(SpringLayout.WEST, passLbl,
+		        30,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, passLbl,
+		        100,
+		        SpringLayout.NORTH, panel);
+		//end passLbl
+		
+		//login
+		login = new JButton("Login");
+		login.setPreferredSize(new Dimension(75, 30));
+		
+		layout.putConstraint(SpringLayout.WEST, login,
+		        250,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, login,
+		        50,
+		        SpringLayout.NORTH, panel);
+		//end login
+		
+		
+		
+		//createAcc
+		createAcc = new JButton("Create");
+		
+		createAcc.setPreferredSize(new Dimension(75, 30));
+		
+		layout.putConstraint(SpringLayout.WEST, createAcc,
+		        250,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, createAcc,
+		        100,
+		        SpringLayout.NORTH, panel);
+		//end createAcc
+		
+		
+		
+		//panel
+		
+		panel.setLayout(layout);
 		panel.add(username);
 		panel.add(pass);
 		panel.add(passLbl);
 		panel.add(usernameLbl);
 		panel.add(login);
 		panel.add(createAcc);
+				
+		//end panel
+		
+		
+		
+		listen = new UserListener(this);
+		
+		
+		
 		frame.add(panel);
 		
-		//panel.validate(); //use when changing the frame
-		//panel.repaint();
+		
+		
 		
 		
 		frame.setPreferredSize(new Dimension(800, 800));
-		frame.setSize(800, 800);
+		//frame.setSize(800, 800);
 		frame.pack();
 		frame.setVisible(true);
 	}
