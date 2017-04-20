@@ -1,3 +1,5 @@
+package people;
+
 /**
  * Contains methods and data for a Person in the market (buyers and sellers)
  */

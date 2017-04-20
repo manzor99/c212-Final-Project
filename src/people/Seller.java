@@ -1,6 +1,8 @@
+package people;
+
 
 import java.util.ArrayList;
-
+import market.Product;
 /**
  * Contains methods and data for Person who sells Products on Marketplace
  */

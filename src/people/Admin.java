@@ -1,3 +1,5 @@
+package people;
+
 /**
  * Contains methods for class that handles inventory
  */

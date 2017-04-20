@@ -1,4 +1,6 @@
+package people;
 
+import market.Product;
 import java.util.ArrayList;
 
 /**

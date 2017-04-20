@@ -1,3 +1,5 @@
+package market;
+
 
 /**
  * Stores information about product in inventory
