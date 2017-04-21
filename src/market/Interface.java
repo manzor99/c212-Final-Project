@@ -175,7 +175,7 @@ public class Interface {
 		
 		
 		
-		frame.setPreferredSize(new Dimension(800, 800));
+		frame.setPreferredSize(new Dimension(800, 500));
 		//frame.setSize(800, 800);
 		frame.pack();
 		frame.setVisible(true);
