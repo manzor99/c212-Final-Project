@@ -35,10 +35,8 @@ public class Interface {
 		JMenuItem mCreate;
 		
 	JMenu help;
-		JMenuItem helpItem;
 	JMenu info;
-		JMenuItem aboutUs;
-		
+	
 	public Interface(){ //login page
 		
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
@@ -53,26 +51,9 @@ public class Interface {
 		
 		//menuBar
 		navigate = new JMenu("Navigate");
-			mLogin = new JMenuItem("login");
-			mCreate = new JMenuItem("Create Account");
-			navigate.add(mLogin);
-			navigate.add(mCreate);
-		
-		help = new JMenu("Help");
-			helpItem = new JMenuItem("Help");
-			help.add(helpItem);
-		
-		info = new JMenu("Info");
-			aboutUs = new JMenuItem("About Us");
-			info.add(aboutUs);
 		menuBar = new JMenuBar();
 		
-		
-		
-		
 		menuBar.add(navigate);
-		menuBar.add(help);
-		menuBar.add(info);
 		
 		menuBar.setVisible(true);
 		frame.setJMenuBar(menuBar);

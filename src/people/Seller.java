@@ -6,16 +6,17 @@ import market.Product;
 /**
  * Contains methods and data for Person who sells Products on Marketplace
  */
-public class Seller extends Person implements Admin{
+public class Seller extends Person implements Admin {
     
-    private ArrayList<Product> sellerInventory;
+    private ArrayList<Product> sellerInventory, inventory;
     private String password;
     
     // Seller constructor
-    public Seller(int idNumber, String name, String email, String notification, String password) {
+    public Seller(int idNumber, String name, String email, String notification, String password, ArrayList<Product> inventory) {
         super(idNumber, name, email, notification);
         sellerInventory = new ArrayList();
         this.password = password;
+        this.inventory = inventory;
     }
     
     /**
@@ -49,7 +50,11 @@ public class Seller extends Person implements Admin{
      */
     @Override
     public void updateQuantity(int id, int quantity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Product p : inventory) {
+            if (p.getIDNumber() == id) {
+                p.setQuantity(quantity);
+            }
+        }
     }
     
     /**
@@ -59,7 +64,11 @@ public class Seller extends Person implements Admin{
      */
     @Override
     public void updatePrice(int id, double price) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Product p : inventory) {
+            if (p.getIDNumber() == id) {
+                p.setPrice(price);
+            }
+        }
     }
     
     /**
@@ -69,7 +78,11 @@ public class Seller extends Person implements Admin{
      */
     @Override
     public void updateName(int id, String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Product p : inventory) {
+            if (p.getIDNumber() == id) {
+                p.setName(name);
+            }
+        }
     }
     
     /**
@@ -79,6 +92,10 @@ public class Seller extends Person implements Admin{
      */
     @Override
     public void updateDescription(int id, String description) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Product p : inventory) {
+            if (p.getIDNumber() == id) {
+                p.setDescription(description);
+            }
+        }
     }
 }

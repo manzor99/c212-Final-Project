@@ -1,7 +1,7 @@
 package people;
 
-import market.Product;
-import java.util.ArrayList;
+import market.*;
+import java.util.*;
 
 /**
  * Methods and data for Person who buys Products on Marketplace
@@ -9,18 +9,30 @@ import java.util.ArrayList;
 public class Buyer extends Person {
 
     private ArrayList<Product> boughtItems;
+    private ArrayList<Product> inventory;
     
     // Buyer constructor
-    public Buyer(int idNumber, String name, String email, String notification) {
+    public Buyer(int idNumber, String name, String email, String notification, ArrayList<Product> inventory) {
         super(idNumber, name, email, notification);
         boughtItems = new ArrayList();
+        this.inventory = inventory;
     }
     
     /**
-     * Buys Product from Marketplace (if available)
+     * Buys Product from Marketplace (if available) and returns the message for the Buyer
      * @param id Number of Product
+     * @return The confirmation or error message for the user
      */
-    public void buyProduct(int id) {
+    public String buyProduct(int id) {
+        for (Product p : inventory) {
+            if (p.getIDNumber() == id && p.getQuantity() > 0) {
+                boughtItems.add(p);
+                p.setQuantity(p.getQuantity() - 1);
+                return "You have purchased " + p.getName() + " for " + p.getPrice();
+            }
+        }
+        
+        return "Requested product is out of stock, or the id is invalid.";
     }
     
     /**
@@ -29,6 +41,12 @@ public class Buyer extends Person {
      * @return Product that is found
      */
     public Product searchProduct(int id) {
+        for(Product p : inventory) {
+            if (p.getIDNumber() == id) {
+                return p;
+            }
+        }
+        
         return null;
     }
     
@@ -38,7 +56,14 @@ public class Buyer extends Person {
      * @return Products that are found in search
      */
     public ArrayList<Product> searchProduct(String name) {
-        return null;
+        ArrayList<Product> products = new ArrayList<>();
+        for(Product p : inventory) {
+            if (p.getName().contains(name)) {
+                products.add(p);
+            }
+        }
+        
+        return products;
     }
     
     /**
@@ -47,11 +72,5 @@ public class Buyer extends Person {
      */
     public ArrayList<Product> getBoughtItems() {
         return boughtItems;
-    }
-    
-    /**
-     * Prints out all Products in Inventory
-     */
-    public void displayBoughtItems() {   
     }
 }

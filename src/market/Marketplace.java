@@ -1,9 +1,6 @@
 package market;
 
-import people.Admin;
-import people.Buyer;
-import people.Seller;
-import people.Person;
+import people.*;
 import java.util.ArrayList;
 
 /**
