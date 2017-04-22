@@ -14,12 +14,18 @@ public class Marketplace implements Admin {
     
     // Marketplace constructor
     public Marketplace() {
-        buyers = new ArrayList();
+        setBuyers(new ArrayList());
         sellers = new ArrayList();
         inventory = new ArrayList();
     }
     
-    /**
+    private void setBuyers(ArrayList buyers) {
+    	
+		this.buyers = buyers;
+		
+	}
+
+	/**
      * Displays Buyers on Marketplace
      */
     public void displayBuyers() {
@@ -129,4 +135,15 @@ public class Marketplace implements Admin {
     public void updateDescription(int id, String description) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	public ArrayList<Buyer> getBuyers() {
+		return buyers;
+	}
+	
+	
+	
+	public ArrayList<Seller> getSellers(){
+		return sellers;
+	}
+	
 }

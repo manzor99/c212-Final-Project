@@ -10,10 +10,11 @@ public class Buyer extends Person {
 
     private ArrayList<Product> boughtItems;
     private ArrayList<Product> inventory;
+    private String password;
     
     // Buyer constructor
-    public Buyer(int idNumber, String name, String email, String notification, ArrayList<Product> inventory) {
-        super(idNumber, name, email, notification);
+    public Buyer(int idNumber, String name, String email, String notification, String password, ArrayList<Product> inventory) {
+        super(idNumber, name, email, notification, password);
         boughtItems = new ArrayList();
         this.inventory = inventory;
     }

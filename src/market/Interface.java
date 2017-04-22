@@ -1,7 +1,6 @@
 package market;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,8 +15,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import people.Buyer;
+import people.Person;
+import people.Seller;
+
 public class Interface {
 
+	Marketplace market;
+	
 	JFrame frame;
 	JPanel panel;
 	JTextField username;
@@ -179,6 +184,27 @@ public class Interface {
 		//frame.setSize(800, 800);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	public boolean loginAttempt(String email, String password){ //true if the username and pass match
+		if(userLookup(email, password) == null){
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	public Person userLookup(String email, String password){
+		
+		for(Buyer buy : market.getBuyers()){
+			
+		}
+		
+		for(Seller sell : market.getSellers()){
+			
+		}
+		
+		return null;
 	}
 	
 	public void loginPage(){}

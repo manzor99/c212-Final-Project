@@ -7,14 +7,15 @@ package people;
 public abstract class Person {
     
     private int idNumber;
-    private String name, email, notification;
+    private String name, email, notification, password;
     
     // Person constructor
-    public Person(int idNumber, String name, String email, String notification) {
+    public Person(int idNumber, String name, String email, String notification, String password) {
         this.idNumber = idNumber;
         this.name = name;
         this.email = email;
         this.notification = notification;
+        this.setPassword(password);
     }
     
     /**
@@ -80,4 +81,12 @@ public abstract class Person {
     public void setNotification(String notification) {
         this.notification = notification;
     }
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

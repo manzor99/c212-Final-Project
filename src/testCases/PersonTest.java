@@ -42,11 +42,6 @@ public class PersonTest {
 	}
 
 	@Test
-	public void testGetNotification() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testSetNotification() {
 		fail("Not yet implemented");
 	}

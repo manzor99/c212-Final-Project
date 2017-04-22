@@ -13,9 +13,8 @@ public class Seller extends Person implements Admin {
     
     // Seller constructor
     public Seller(int idNumber, String name, String email, String notification, String password, ArrayList<Product> inventory) {
-        super(idNumber, name, email, notification);
+        super(idNumber, name, email, notification, password);
         sellerInventory = new ArrayList();
-        this.password = password;
         this.inventory = inventory;
     }
     
