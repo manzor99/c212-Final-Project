@@ -8,13 +8,14 @@ import market.Product;
  */
 public class Seller extends Person implements Admin {
     
-    private ArrayList<Product> sellerInventory, inventory;
+    private ArrayList<Product> sellerInventory, inventory;  // Inventory passed from marketplace
     private String password;
     
     // Seller constructor
-    public Seller(int idNumber, String name, String email, String notification, String password, ArrayList<Product> inventory) {
-        super(idNumber, name, email, notification, password);
+    public Seller(int idNumber, String name, String email, String password, ArrayList<Product> inventory) {
+        super(idNumber, name, email);
         sellerInventory = new ArrayList();
+        this.password = password;
         this.inventory = inventory;
     }
     

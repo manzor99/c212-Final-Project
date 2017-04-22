@@ -7,15 +7,13 @@ package people;
 public abstract class Person {
     
     private int idNumber;
-    private String name, email, notification, password;
+    private String name, email;
     
     // Person constructor
-    public Person(int idNumber, String name, String email, String notification, String password) {
+    public Person(int idNumber, String name, String email) {
         this.idNumber = idNumber;
         this.name = name;
         this.email = email;
-        this.notification = notification;
-        this.setPassword(password);
     }
     
     /**
@@ -65,28 +63,4 @@ public abstract class Person {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    /**
-     * Returns Person's notifications
-     * @return Notifications
-     */
-    public String getNotification() {
-        return notification;
-    }
-    
-    /**
-     * Sets the notifications
-     * @param notification New notification
-     */
-    public void setNotification(String notification) {
-        this.notification = notification;
-    }
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }
