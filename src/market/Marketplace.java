@@ -129,4 +129,18 @@ public class Marketplace implements Admin {
     public void updateDescription(int id, String description) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    	public ArrayList<Buyer> getBuyers() {
+		return buyers;
+	}
+		
+	public ArrayList<Seller> getSellers(){
+		return sellers;
+	}
+	
+	public ArrayList<Product> getInventory(){
+		return inventory;
+	}
+
+    
 }
