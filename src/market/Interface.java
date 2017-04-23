@@ -18,7 +18,8 @@ public class Interface {
     JLabel passLbl;
     UserListener listen;
     JTable inventoryDisplay;
-    
+    SpringLayout layout;
+
     JMenuBar menuBar;
 
     JMenu navigate;
