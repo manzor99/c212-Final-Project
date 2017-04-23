@@ -7,13 +7,14 @@ package people;
 public abstract class Person {
     
     private int idNumber;
-    private String name, email;
+    private String name, email, password;
     
     // Person constructor
-    public Person(int idNumber, String name, String email) {
+    public Person(int idNumber, String name, String email, String password) {
         this.idNumber = idNumber;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
     
     /**
@@ -62,5 +63,21 @@ public abstract class Person {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    /**
+     * Returns Person's password
+     * @return The password
+     */
+    public String getPassword() {
+        return password;
+    }
+    
+    /**
+     * Sets Person's password
+     * @param password New password to use
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

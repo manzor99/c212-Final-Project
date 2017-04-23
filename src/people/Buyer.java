@@ -11,8 +11,8 @@ public class Buyer extends Person {
     private ArrayList<Product> boughtItems, inventory;  // Inventory passed from Marketplace
     
     // Buyer constructor
-    public Buyer(int idNumber, String name, String email, ArrayList<Product> inventory) {
-        super(idNumber, name, email);
+    public Buyer(int idNumber, String name, String email, String password, ArrayList<Product> inventory) {
+        super(idNumber, name, email, password);
         boughtItems = new ArrayList();
         this.inventory = inventory;
     }

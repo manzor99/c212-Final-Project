@@ -9,13 +9,11 @@ import market.Product;
 public class Seller extends Person implements Admin {
     
     private ArrayList<Product> sellerInventory, inventory;  // Inventory passed from marketplace
-    private String password;
     
     // Seller constructor
     public Seller(int idNumber, String name, String email, String password, ArrayList<Product> inventory) {
-        super(idNumber, name, email);
+        super(idNumber, name, email, password);
         sellerInventory = new ArrayList();
-        this.password = password;
         this.inventory = inventory;
     }
     
@@ -25,22 +23,6 @@ public class Seller extends Person implements Admin {
      */
     public ArrayList<Product> getSellerInventory() {
         return sellerInventory;
-    }
-    
-    /**
-     * Sets the password
-     * @param password New password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    /**
-     * Returns Seller password
-     * @return Seller password
-     */
-    public String getPassword() {
-        return password;
     }
     
     /**
