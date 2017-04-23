@@ -1,9 +1,16 @@
 package market;
 
 import java.awt.Dimension;
-import java.awt.event.*;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel; //idk why i need this import but it gives an error without it
+
+import people.Buyer;
+import people.Person;
+import people.Seller;
 
 public class Interface {
     
@@ -31,8 +38,9 @@ public class Interface {
 
     public Interface() { //login page
 
-        		loginPage();
+        loginPage();
 		listen = new UserListener(this);
+		market = new Marketplace();
     }
 
 	public boolean loginAttempt(String email, String password){ //true if the username and pass match
@@ -248,6 +256,7 @@ public class Interface {
 	
 	public void sellerPage(Seller sell){
 		frame.setVisible(false);
+		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
 		String[][] items = new String[market.getInventory().size()][4];
@@ -261,8 +270,7 @@ public class Interface {
 			
 		}
 		
-		inventoryDisplay = new JTable(50, 4);
-		
+		inventoryDisplay = new JTable(market.getInventory().size(), 4);
 		DefaultTableModel dtm = new DefaultTableModel(items, colNames);
 		inventoryDisplay.setModel(dtm);
 		

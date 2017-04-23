@@ -1,14 +1,16 @@
 package market;
 
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+
 import people.Buyer;
+import people.Seller;
 
 public class Run {
 
     public static void main(String[] args) {
-        FileHandler f = new FileHandler();
-        Buyer p = new Buyer(0, "Andrew", "blah", new ArrayList<Product>());
-        f.updatePerson(p, 1, "New Name");
+        Interface face = new Interface();
+        face.sellerPage(new Seller(1, "Rocco", "email", "asgd", "pass", null));
     }
 
 }
