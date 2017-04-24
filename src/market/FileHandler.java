@@ -33,7 +33,8 @@ public class FileHandler {
 
             for (Seller s : sellersList) {
                 list = s.getSellerInventory();
-                toAppend = s.getIdNumber() + "," + s.getName() + "," + s.getEmail() + "," + s.getPassword() + "," + list;
+                String form = list.toString().replace(",", ";");
+                toAppend = s.getIdNumber() + "," + s.getName() + "," + s.getEmail() + "," + s.getPassword() + "," + form;
                 writer.append("\n" + toAppend);
             }
             writer.close();
@@ -55,7 +56,8 @@ public class FileHandler {
 
             for (Buyer b : buyersList) {
                 list = b.getBoughtItems();
-                toAppend = b.getIdNumber() + "," + b.getName() + "," + b.getEmail() + "," + b.getPassword() + "," + list;
+                String form = list.toString().replace(",", ";");
+                toAppend = b.getIdNumber() + "," + b.getName() + "," + b.getEmail() + "," + b.getPassword() + "," + form;
                 writer.append("\n" + toAppend);
             }
             
@@ -163,7 +165,7 @@ public class FileHandler {
     private ArrayList<Product> stringToProduct(String x) {
         ArrayList<Product> list = new ArrayList<>();
         String newString = x.trim().substring(1, x.length() - 1);
-        String[] rows = newString.split(",");
+        String[] rows = newString.split(";");
 
         if (!"[]".equals(x)) {  // If the inventory column isn't blank
             for (String row : rows) {
