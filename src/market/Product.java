@@ -118,10 +118,13 @@ public class Product {
         this.price = price;
     }
     
+    /**
+     * Useful for saving into CSV file and parsing
+     * @return String version of Product
+     */
     @Override
     public String toString() {
-        return getName() + ": " + "\nID: " + getIDNumber() 
-                + "\nDescription: " + getDescription() + "\nPrice: " 
-                + "\nQuantity: " + getQuantity();
+        return getIDNumber() + ":" + getName() + ":" + getDescription()
+                + ":" + getPrice() + ":" + getQuantity() + ":" + getSellerId();
     }
 }
