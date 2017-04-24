@@ -28,7 +28,8 @@ public class Interface {
     SpringLayout layout;
 
     JMenuBar menuBar;
-
+    JMenuItem helpItem;
+	JMenuItem aboutUs;
     JMenu navigate;
     JMenuItem mLogin;
     JMenuItem mCreate;
@@ -36,6 +37,8 @@ public class Interface {
     JMenu help;
     JMenu info;
 
+    String page; //login buyer seller or admin
+    
     public Interface() { //login page
 
         loginPage();
@@ -68,138 +71,155 @@ public class Interface {
 	
 	public void loginPage(){
 		
+		page = "login";
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
-				//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
+		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
 				
-				layout = new SpringLayout();
-				panel = new JPanel();
-				//frame
-				frame = new JFrame("Roccozon"); //its a pun on amazon
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				//end frame
-				
-				//menuBar
-				navigate = new JMenu("Navigate");
-				menuBar = new JMenuBar();
-				
-				menuBar.add(navigate);
-				
-				menuBar.setVisible(true);
-				frame.setJMenuBar(menuBar);
-				frame.add(menuBar);
-				navigate = new JMenu();
-				//end menuBar
-				
-				//username
-				username = new JTextField();
-				//username.setLocation(100, 100);
-				username.setSize(new Dimension(100, 30));
-				layout.putConstraint(SpringLayout.WEST, username,
-		                100,
-		                SpringLayout.WEST, panel);
-				
-				layout.putConstraint(SpringLayout.NORTH, username,
-		                50,
-		                SpringLayout.NORTH, panel);
-				//end username
-				
-				//usernameLbl
-				usernameLbl = new JLabel("Email: ");
-				username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
-				usernameLbl.setPreferredSize(new Dimension(100, 30));
+		layout = new SpringLayout();
+		panel = new JPanel();
+		//frame
+		frame = new JFrame("Roccozon"); //its a pun on amazon
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//end frame
+		
+		//menuBar
+		navigate = new JMenu("Navigate");
+		mLogin = new JMenuItem("login");
+		mCreate = new JMenuItem("Create Account");
+		navigate.add(mLogin);
+		navigate.add(mCreate);
+			
+		help = new JMenu("Help");
+			helpItem = new JMenuItem("Help");
+			help.add(helpItem);
+			
+		info = new JMenu("Info");
+			aboutUs = new JMenuItem("About Us");
+			info.add(aboutUs);
+		menuBar = new JMenuBar();
+			
+			
+			
+			
+		menuBar.add(navigate);
+		menuBar.add(help);
+		menuBar.add(info);
+			
+			
+		menuBar.setVisible(true);
+		frame.setJMenuBar(menuBar);
+		//end menuBar
+			
+		//username
+		username = new JTextField();
+		//username.setLocation(100, 100);
+		username.setSize(new Dimension(100, 30));
+		layout.putConstraint(SpringLayout.WEST, username,
+		              100,
+		              SpringLayout.WEST, panel);
+		
+		layout.putConstraint(SpringLayout.NORTH, username,
+		              50,
+		              SpringLayout.NORTH, panel);
+		//end username
+		
+		//usernameLbl
+		usernameLbl = new JLabel("Email: ");
+		username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
+		usernameLbl.setPreferredSize(new Dimension(100, 30));
 					
-				layout.putConstraint(SpringLayout.WEST, usernameLbl,
-				        30,
-				        SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.WEST, usernameLbl,
+		        30,
+		        SpringLayout.WEST, panel);
 						
-				layout.putConstraint(SpringLayout.NORTH, usernameLbl,
-				        50,
-				        SpringLayout.NORTH, panel);
-				//end usernameLbl
+		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
+		        50,
+		        SpringLayout.NORTH, panel);
+		//end usernameLbl
 				
-				//pass
-				pass = new JPasswordField(); 
-				pass.setSize(new Dimension(100, 30));
-				pass.setPreferredSize(new Dimension(100, 30));
+		//pass
+		pass = new JPasswordField(); 
+		pass.setSize(new Dimension(100, 30));
+		pass.setPreferredSize(new Dimension(100, 30));
 				
-				layout.putConstraint(SpringLayout.WEST, pass,
-				        100,
-				        SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.WEST, pass,
+		        100,
+		        SpringLayout.WEST, panel);
 						
-				layout.putConstraint(SpringLayout.NORTH, pass,
-				        100,
-				        SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.NORTH, pass,
+		        100,
+		        SpringLayout.NORTH, panel);
 				
-				//end pass
+		//end pass
+		
+		//passLbl
+		passLbl = new JLabel("Password: ");
+		passLbl.setLocation(0, 40);
+		passLbl.setPreferredSize(new Dimension(100, 30));
 				
-				//passLbl
-				passLbl = new JLabel("Password: ");
-				passLbl.setLocation(0, 40);
-				passLbl.setPreferredSize(new Dimension(100, 30));
-				
-				layout.putConstraint(SpringLayout.WEST, passLbl,
-				        30,
-				        SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.WEST, passLbl,
+		        30,
+		        SpringLayout.WEST, panel);
 						
-				layout.putConstraint(SpringLayout.NORTH, passLbl,
-				        100,
-				        SpringLayout.NORTH, panel);
-				//end passLbl
+		layout.putConstraint(SpringLayout.NORTH, passLbl,
+		        100,
+		        SpringLayout.NORTH, panel);
+		//end passLbl
 				
-				//login
-				login = new JButton("Login");
-				login.setPreferredSize(new Dimension(75, 30));
+		//login
+		login = new JButton("Login");
+		login.setPreferredSize(new Dimension(75, 30));
 				
-				layout.putConstraint(SpringLayout.WEST, login,
-				        250,
-				        SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.WEST, login,
+		        250,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, login,
+		        50,
+		        SpringLayout.NORTH, panel);
+		//end login
+				
+				
+				
+		//createAcc
+		createAcc = new JButton("Create");
+		
+		createAcc.setPreferredSize(new Dimension(75, 30));
+			
+		layout.putConstraint(SpringLayout.WEST, createAcc,
+		        250,
+		        SpringLayout.WEST, panel);
 						
-				layout.putConstraint(SpringLayout.NORTH, login,
-				        50,
-				        SpringLayout.NORTH, panel);
-				//end login
+		layout.putConstraint(SpringLayout.NORTH, createAcc,
+		        100,
+		        SpringLayout.NORTH, panel);
+		//end createAcc
 				
 				
 				
-				//createAcc
-				createAcc = new JButton("Create");
+		//panel
 				
-				createAcc.setPreferredSize(new Dimension(75, 30));
-				
-				layout.putConstraint(SpringLayout.WEST, createAcc,
-				        250,
-				        SpringLayout.WEST, panel);
+		panel.setLayout(layout);
+		panel.add(username);
+		panel.add(pass);
+		panel.add(passLbl);
+		panel.add(usernameLbl);
+		panel.add(login);
+		panel.add(createAcc);
 						
-				layout.putConstraint(SpringLayout.NORTH, createAcc,
-				        100,
-				        SpringLayout.NORTH, panel);
-				//end createAcc
+		//end panel
 				
-				
-				
-				//panel
-				
-				panel.setLayout(layout);
-				panel.add(username);
-				panel.add(pass);
-				panel.add(passLbl);
-				panel.add(usernameLbl);
-				panel.add(login);
-				panel.add(createAcc);
-						
-				//end panel
-				
-				frame.add(panel);
-				
-				frame.setPreferredSize(new Dimension(800, 500));
-				frame.pack();
-				frame.setVisible(true);
+		frame.add(panel);
+		
+		frame.setPreferredSize(new Dimension(800, 500));
+		frame.pack();
+		frame.setVisible(true);
 		
 	}
 	
-	public void createAccPage(){}
-	
 	public void buyerPage(Buyer buy){
+		page = "buyer";
+		
 		frame.setVisible(false);
 		
 		usernameLbl.setText("Welcome " + buy.getName() + "!");
@@ -255,6 +275,8 @@ public class Interface {
 	}
 	
 	public void sellerPage(Seller sell){
+		page = "seller";
+		
 		frame.setVisible(false);
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
@@ -343,6 +365,33 @@ public class Interface {
 		frame.setVisible(true);
 	}
 	
+	public boolean createAccount(){
+		JOptionPane popup = new JOptionPane();
+		
+		if(! username.getText().contains("@")){
+			
+			popup.showMessageDialog(frame, "Invalid email");
+			return false;
+		}
+		
+		for(Buyer buy : market.getBuyers()){
+			if(buy.getEmail().equals(this.username.getText())){
+				popup.showMessageDialog(frame, "Email already registered");
+				return false;
+			}
+		}
+		
+		for(Seller seller : market.getSellers()){
+			if(seller.getEmail().equals(this.username.getText())){
+				popup.showMessageDialog(frame, "Email already registered");
+				return false;
+			}
+		}
+		
+		//add the create an account stuff
+		
+		return true;
+	}
 
     private class UserListener implements ActionListener {
 
@@ -360,7 +409,27 @@ public class Interface {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
             if (e.getSource() == face.login) {
-                System.out.println("login");
+            	Person person = userLookup(username.getText(), pass.getText());
+            	if(page.equals("login")){
+            		
+            		if(person == null){
+            			JOptionPane popup = new JOptionPane("Invalid login");
+            			popup.showMessageDialog(face.frame, "Invalid Login Information");
+            			
+            		}
+            	}
+            	
+            	else if(page.equals("buyer"))
+            		face.buyerPage((Buyer)person);
+            	
+            	else if(page.equals("seller"))
+            		face.sellerPage((Seller) person);
+            	
+            	else if(page.equals("admin"))
+            		System.out.println("admin"); //make admin page******
+            	
+            	else
+            		System.out.println("error");//this should never occur remove after testing
             } else if (e.getSource() == face.createAcc) {
                 System.out.println("create");
             }
