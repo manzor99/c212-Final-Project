@@ -1,5 +1,8 @@
 package people;
 
+import java.util.ArrayList;
+import market.*;
+
 /**
  * Contains methods and data for a Person in the market (buyers and sellers)
  */
@@ -8,13 +11,15 @@ public abstract class Person {
     
     private int idNumber;
     private String name, email, password;
+    private ArrayList<Product> personalInv;
     
     // Person constructor
-    public Person(int idNumber, String name, String email, String password) {
+    public Person(int idNumber, String name, String email, String password, ArrayList<Product> personalInv) {
         this.idNumber = idNumber;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.personalInv = personalInv;
     }
     
     /**
@@ -79,5 +84,21 @@ public abstract class Person {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    /**
+     * Adds product to personalInv
+     * @param p Product to add
+     */
+    public void addInventory(Product p) {
+        personalInv.add(p);
+    }
+    
+    /**
+     * Returns Person's personalInv
+     * @return Individual personalInv (bought or to sell)
+     */
+    public ArrayList<Product> getInventory() {
+        return personalInv;
     }
 }

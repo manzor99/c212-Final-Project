@@ -32,7 +32,7 @@ public class FileHandler {
             String toAppend;
 
             for (Seller s : sellersList) {
-                list = s.getSellerInventory();
+                list = s.getInventory();
                 String form = list.toString().replace(",", ";");
                 toAppend = s.getIdNumber() + "," + s.getName() + "," + s.getEmail() + "," + s.getPassword() + "," + form;
                 writer.append("\n" + toAppend);
@@ -53,14 +53,13 @@ public class FileHandler {
             writer.append("ID,Name,Email,Password,Inventory");  // Append the header
             ArrayList<Product> list;
             String toAppend;
-
             for (Buyer b : buyersList) {
-                list = b.getBoughtItems();
+                list = b.getInventory();
                 String form = list.toString().replace(",", ";");
                 toAppend = b.getIdNumber() + "," + b.getName() + "," + b.getEmail() + "," + b.getPassword() + "," + form;
                 writer.append("\n" + toAppend);
             }
-            
+
             writer.close();
         } catch (IOException e) {
             System.out.println(e);
@@ -79,11 +78,11 @@ public class FileHandler {
             String toAppend;
 
             for (Product p : inventoryList) {
-                toAppend = "\n" + p.getIDNumber() + "," + p.getName() + "," + p.getDescription()
+                toAppend = p.getIDNumber() + "," + p.getName() + "," + p.getDescription()
                         + "," + p.getPrice() + "," + p.getQuantity() + "," + p.getSellerId();
                 writer.append("\n" + toAppend);
             }
-            
+
             writer.close();
         } catch (IOException e) {
         }
@@ -99,11 +98,13 @@ public class FileHandler {
 
         try {
             scanner = new Scanner(inventory);
-            scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().split(",");
-                list.add(new Product(Integer.valueOf(line[0]), Integer.valueOf(line[5]),
-                        Integer.valueOf(line[4]), line[1], line[2], Double.valueOf(line[3])));
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+                while (scanner.hasNextLine()) {
+                    String[] line = scanner.nextLine().trim().split(",");
+                    list.add(new Product(Integer.valueOf(line[0]), Integer.valueOf(line[5]),
+                            Integer.valueOf(line[4]), line[1], line[2], Double.valueOf(line[3])));
+                }
             }
         } catch (FileNotFoundException | NumberFormatException e) {
             System.out.println(e);
@@ -121,11 +122,13 @@ public class FileHandler {
 
         try {
             scanner = new Scanner(buyers);
-            scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().trim().split(",");
-                list.add(new Buyer(Integer.valueOf(line[0]), line[1], line[2], line[3],
-                        stringToProduct(line[4])));
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+                while (scanner.hasNextLine()) {
+                    String[] line = scanner.nextLine().trim().split(",");
+                    list.add(new Buyer(Integer.valueOf(line[0]), line[1], line[2], line[3],
+                            stringToProduct(line[4])));
+                }
             }
         } catch (FileNotFoundException | NumberFormatException e) {
             System.out.println(Arrays.toString(e.getStackTrace()));
@@ -144,12 +147,15 @@ public class FileHandler {
 
         try {
             scanner = new Scanner(sellers);
-            while (scanner.hasNextLine()) {
+            if (scanner.hasNextLine()) {
                 scanner.nextLine();
-                String[] line = scanner.nextLine().split(",");
-                list.add(new Seller(Integer.valueOf(line[0]), line[1], line[2], line[3],
-                        stringToProduct(line[4])));
+                while (scanner.hasNextLine()) {
+                    String[] line = scanner.nextLine().trim().split(",");
+                    list.add(new Seller(Integer.valueOf(line[0]), line[1], line[2], line[3],
+                            stringToProduct(line[4])));
+                }
             }
+
         } catch (FileNotFoundException | NumberFormatException e) {
         }
 
@@ -170,9 +176,9 @@ public class FileHandler {
         if (!"[]".equals(x)) {  // If the inventory column isn't blank
             for (String row : rows) {
                 String[] line = row.split(":");
-                list.add(new Product(Integer.valueOf(line[0]),
-                        Integer.valueOf(line[5]), Integer.valueOf(line[4]),
-                        line[1], line[2], Double.valueOf(line[3])));
+                list.add(new Product(Integer.valueOf(line[0].trim()),
+                        Integer.valueOf(line[5].trim()), Integer.valueOf(line[4].trim()),
+                        line[1].trim(), line[2].trim(), Double.valueOf(line[3].trim())));
             }
         }
 
