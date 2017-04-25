@@ -5,7 +5,19 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel; //idk why i need this import but it gives an error without it
 
 import people.Buyer;
@@ -28,22 +40,92 @@ public class Interface {
     SpringLayout layout;
 
     JMenuBar menuBar;
-    JMenuItem helpItem;
-	JMenuItem aboutUs;
+    
+	JMenu buyers;
+		JMenuItem purchaseHistory;
+		JMenuItem shop;
+		
+	JMenu sellers;
+		JMenuItem yourInventory;
+		JMenu addItem;
+			JMenuItem existingItem;
+			JMenuItem newItem;
+		JMenuItem removeItem;
+	
     JMenu navigate;
     JMenuItem mLogin;
     JMenuItem mCreate;
 
-    JMenu help;
-    JMenu info;
-
     String page; //login buyer seller or admin
     
     public Interface() { //login page
+    	
+    	layout = new SpringLayout();
+		panel = new JPanel();
+		//frame
+		frame = new JFrame("Roccozon"); //its a pun on amazon
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//end frame
+		
+		//menuBar
+		menuBar = new JMenuBar();
+		
 
+		buyers = new JMenu("Buyers");
+			purchaseHistory = new JMenuItem("Purchase History");
+			shop = new JMenuItem("Shop");
+			buyers.add(purchaseHistory);
+			buyers.add(shop);			
+			
+		sellers = new JMenu("Sellers");
+			yourInventory = new JMenuItem("Your Inventory");
+			addItem = new JMenu("Add Items");
+				existingItem = new JMenuItem("Existing Item");
+				newItem = new JMenuItem("New Item");
+			removeItem = new JMenuItem("Remove Item");
+			
+		
+		sellers.add(yourInventory);
+		sellers.add(addItem);
+		addItem.add(existingItem);
+		addItem.add(newItem);
+		sellers.add(removeItem);
+		
+		navigate = new JMenu("Navigate");
+		mLogin = new JMenuItem("login");
+		mCreate = new JMenuItem("Create Account");
+		
+		
+		menuBar.add(navigate);
+		//menuBar.add(help);
+		//menuBar.add(info);
+		menuBar.add(this.buyers);
+		menuBar.add(this.sellers);
+		
+		navigate.add(mLogin);
+		navigate.add(mCreate);
+		
+		
+		/*
+		help = new JMenu("Help");
+			helpItem = new JMenuItem("Help");
+			help.add(helpItem);
+			
+		info = new JMenu("Info");
+			aboutUs = new JMenuItem("About Us");
+			info.add(aboutUs);
+			*/
+		
+			
+			
+		menuBar.setVisible(true);
+		frame.setJMenuBar(menuBar);
+    	
         loginPage();
-		listen = new UserListener(this);
-		market = new Marketplace();
+        
+        listen = new UserListener(this);
+        market = new Marketplace();
+        
     }
 
 	public boolean loginAttempt(String email, String password){ //true if the username and pass match
@@ -75,39 +157,7 @@ public class Interface {
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
 				
-		layout = new SpringLayout();
-		panel = new JPanel();
-		//frame
-		frame = new JFrame("Roccozon"); //its a pun on amazon
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//end frame
 		
-		//menuBar
-		navigate = new JMenu("Navigate");
-		mLogin = new JMenuItem("login");
-		mCreate = new JMenuItem("Create Account");
-		navigate.add(mLogin);
-		navigate.add(mCreate);
-			
-		help = new JMenu("Help");
-			helpItem = new JMenuItem("Help");
-			help.add(helpItem);
-			
-		info = new JMenu("Info");
-			aboutUs = new JMenuItem("About Us");
-			info.add(aboutUs);
-		menuBar = new JMenuBar();
-			
-			
-			
-			
-		menuBar.add(navigate);
-		menuBar.add(help);
-		menuBar.add(info);
-			
-			
-		menuBar.setVisible(true);
-		frame.setJMenuBar(menuBar);
 		//end menuBar
 			
 		//username
@@ -402,13 +452,21 @@ public class Interface {
             this.face = face;
             face.login.addActionListener(this);
             face.createAcc.addActionListener(this);
+            face.yourInventory.addActionListener(this);
+            face.existingItem.addActionListener(this);
+            face.newItem.addActionListener(this);
+            face.removeItem.addActionListener(this);
+            face.purchaseHistory.addActionListener(this);
+			face.shop.addActionListener(this);
+			face.mCreate.addActionListener(this);
+			face.mLogin.addActionListener(this);
 
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-            if (e.getSource() == face.login) {
+            if (e.getSource() == face.login || e.getSource() == face.mLogin) {
             	Person person = userLookup(username.getText(), pass.getText());
             	if(page.equals("login")){
             		
@@ -430,10 +488,13 @@ public class Interface {
             	
             	else
             		System.out.println("error");//this should never occur remove after testing
-            } else if (e.getSource() == face.createAcc) {
+            } else if (e.getSource() == face.createAcc || e.getSource() == face.mCreate) {
                 System.out.println("create");
             }
+            
         }
 
     }
+    
+
 }
