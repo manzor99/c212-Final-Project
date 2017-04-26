@@ -58,7 +58,7 @@ public class Interface {
     JMenuItem mCreate;
 
     Person user; //user that is currently logged in
-    String page; //login buyer seller or admin
+    String page; //login buyer or seller (might be removed) ********
     
     public Interface() { //login page
     	
@@ -419,6 +419,7 @@ public class Interface {
 	
 	public boolean createAccount(){
 		JOptionPane popup = new JOptionPane();
+		int largestID = 0; //nobody will have a negative ID
 		
 		if(! (username.getText().contains("@") && username.getText().contains(".")) && ! pass.getText().equals("")){
 			
@@ -427,6 +428,9 @@ public class Interface {
 		}
 		
 		for(Buyer buy : market.getBuyers()){
+			if(buy.getIdNumber() > largestID)
+				largestID = buy.getIdNumber();
+			
 			if(buy.getEmail().equals(this.username.getText())){
 				popup.showMessageDialog(frame, "Email already registered");
 				return false;
@@ -434,6 +438,9 @@ public class Interface {
 		}
 		
 		for(Seller seller : market.getSellers()){
+			if(seller.getIdNumber() > largestID)
+				largestID = seller.getIdNumber();
+			
 			if(seller.getEmail().equals(this.username.getText())){
 				popup.showMessageDialog(frame, "Email already registered");
 				return false;
@@ -457,11 +464,12 @@ public class Interface {
                 frame, "Enter your name:", "");
 		
 		if(choice == 1){
-			user = new Seller(5, name, username.getText(),  pass.getText(), new ArrayList<Product>());
+			user = new Seller(largestID + 1, name, username.getText(),  pass.getText(), new ArrayList<Product>());
 			
 		}
+		
 		else{
-			user = new Buyer(5, name, username.getText(),  pass.getText(), new ArrayList<Product>());
+			user = new Buyer(largestID + 1, name, username.getText(),  pass.getText(), new ArrayList<Product>());
 			
 		}
 				
