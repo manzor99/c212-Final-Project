@@ -88,9 +88,11 @@ public class FileHandler {
                     }
                 }
             }
+            
         } catch (FileNotFoundException | NumberFormatException e) {
         }
-
+        
+        scanner.close();
         return list;
     }
 
@@ -114,6 +116,8 @@ public class FileHandler {
             }
         } catch (FileNotFoundException | NumberFormatException e) {
         }
+        
+        scanner.close();
 
         return list;
     }
@@ -139,7 +143,8 @@ public class FileHandler {
 
         } catch (FileNotFoundException | NumberFormatException e) {
         }
-
+        
+        scanner.close();
         return list;
     }
 
