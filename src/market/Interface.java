@@ -59,6 +59,8 @@ public class Interface {
 
     Person user; //user that is currently logged in
     
+    //remove popup variable and use static method instead************** 
+    
     public Interface() { //login page
     	
     	layout = new SpringLayout();
@@ -66,6 +68,13 @@ public class Interface {
 		//frame
 		frame = new JFrame("Roccozon"); //its a pun on amazon
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		username = new JTextField();
+		pass = new JPasswordField(); 
+		passLbl = new JLabel("Password: ");
+		usernameLbl = new JLabel("Email: ");
+		createAcc = new JButton("Create"); 
+		login = new JButton("Login");
 		//end frame
 		
 		//menuBar
@@ -129,6 +138,65 @@ public class Interface {
         
     }
 
+    /*
+    public void frameSetup(){
+    	layout = new SpringLayout();
+		panel = new JPanel();
+		usernameLbl = new JLabel("Email: ");
+		username = new JTextField();
+		pass = new JPasswordField();
+		passLbl = new JLabel("Password: ");
+		login = new JButton("Login");
+		createAcc = new JButton("Create");
+		//frame
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//end frame
+		
+		//menuBar
+		menuBar = new JMenuBar();
+		
+
+		buyers = new JMenu("Buyers");
+			purchaseHistory = new JMenuItem("Purchase History");
+			shop = new JMenuItem("Shop");
+			buyers.add(purchaseHistory);
+			buyers.add(shop);			
+			
+		sellers = new JMenu("Sellers");
+			yourInventory = new JMenuItem("Your Inventory");
+			addItem = new JMenu("Add Items");
+				existingItem = new JMenuItem("Existing Item");
+				newItem = new JMenuItem("New Item");
+			removeItem = new JMenuItem("Remove Item");
+			
+		
+		sellers.add(yourInventory);
+		sellers.add(addItem);
+		addItem.add(existingItem);
+		addItem.add(newItem);
+		sellers.add(removeItem);
+		
+		navigate = new JMenu("Navigate");
+		mLogout = new JMenuItem("logout");
+		mCreate = new JMenuItem("Create Account");
+		
+		
+		menuBar.add(navigate);
+		//menuBar.add(help);
+		//menuBar.add(info);
+		menuBar.add(this.buyers);
+		menuBar.add(this.sellers);
+		
+		navigate.add(mLogout);
+		navigate.add(mCreate);
+			
+		menuBar.setVisible(true);
+		frame.setJMenuBar(menuBar);
+    	
+    }
+    */
+    
 	public boolean loginAttempt(String email, String password){ //true if the username and pass match
 		if(userLookup(email, password) == null){
 			return false;
@@ -155,6 +223,8 @@ public class Interface {
 	public void loginPage(){
 		
 		user = null;
+		usernameLbl.setVisible(false);
+		passLbl.setVisible(false);
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
 				
@@ -162,7 +232,7 @@ public class Interface {
 		//end menuBar
 			
 		//username
-		username = new JTextField();
+		
 		//username.setLocation(100, 100);
 		username.setSize(new Dimension(100, 30));
 		layout.putConstraint(SpringLayout.WEST, username,
@@ -175,7 +245,7 @@ public class Interface {
 		//end username
 		
 		//usernameLbl
-		usernameLbl = new JLabel("Email: ");
+		
 		username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
 		usernameLbl.setPreferredSize(new Dimension(100, 30));
 					
@@ -189,7 +259,7 @@ public class Interface {
 		//end usernameLbl
 				
 		//pass
-		pass = new JPasswordField(); 
+		
 		pass.setSize(new Dimension(100, 30));
 		pass.setPreferredSize(new Dimension(100, 30));
 				
@@ -204,7 +274,7 @@ public class Interface {
 		//end pass
 		
 		//passLbl
-		passLbl = new JLabel("Password: ");
+		
 		passLbl.setLocation(0, 40);
 		passLbl.setPreferredSize(new Dimension(100, 30));
 				
@@ -218,7 +288,7 @@ public class Interface {
 		//end passLbl
 				
 		//login
-		login = new JButton("Login");
+		
 		login.setPreferredSize(new Dimension(75, 30));
 				
 		layout.putConstraint(SpringLayout.WEST, login,
@@ -233,7 +303,7 @@ public class Interface {
 				
 				
 		//createAcc
-		createAcc = new JButton("Create");
+		
 		
 		createAcc.setPreferredSize(new Dimension(75, 30));
 			
@@ -265,6 +335,8 @@ public class Interface {
 		frame.setPreferredSize(new Dimension(800, 500));
 		frame.pack();
 		frame.setVisible(true);
+
+		frame.repaint();
 		
 	}
 	
@@ -374,7 +446,7 @@ public class Interface {
 			items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
 			items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
 			items[i][3] = user.getInventory().get(i).getDescription();
-			
+			System.out.println(items[i][0]);
 		}
 		
 		inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
@@ -447,6 +519,8 @@ public class Interface {
 		createAcc.setVisible(false);
 		
 		frame.pack();
+		usernameLbl.setVisible(true);
+		passLbl.setVisible(true);
 		frame.setVisible(true);
 	}
 	
@@ -541,13 +615,79 @@ public class Interface {
 		}
 	
 	}
+	
 	public void addExistingItem() {
-		// TODO Auto-generated method stub
+		
+		if(user == null || !(user instanceof Seller)){
+			JOptionPane.showMessageDialog(frame, "Must be logged in as a seller to do that.");
+    		return;
+		}
+		
+		Object[] items = new Object[user.getInventory().size()];
+		int quantity;
+		
+		for (int i = 0; i < items.length; i++) {
+			items[i] = user.getInventory().get(i).getName();
+		}
+		
+		String item = (String) JOptionPane.showInputDialog(frame, "Which item would you like to add more of?",
+		        "Items", JOptionPane.QUESTION_MESSAGE, null,                                       
+		        items,
+		        items[0]);
+		
+		if(item == null)
+			return;
+		else{
+			
+			try {
+				quantity = Integer.parseInt((String)JOptionPane.showInputDialog(frame, "How many of this item would you like to add?", ""));
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(frame, "Invalid quantity");
+				return;
+			}
+			
+		}
+		
+		
 		
 	}
 	
 	public void addNewItem() {
-		// TODO Auto-generated method stub
+		
+		if(user == null || ! (user instanceof Seller)){
+			JOptionPane.showMessageDialog(frame, "Must be logged in as a seller to do that.");
+    		return;
+		}
+			
+		
+		String name = (String)JOptionPane.showInputDialog(frame, "Enter the item's name:", "");
+		String description = (String)JOptionPane.showInputDialog(frame, "Enter the item's description:", "");
+		double price;
+		int quantity;
+		
+		try {
+			price = Double.parseDouble((String)JOptionPane.showInputDialog(frame, "Enter the price of the item:", ""));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, "Invalid price");
+			return;
+		}
+		
+		try {
+			quantity = Integer.parseInt((String)JOptionPane.showInputDialog(frame, "Enter the quantity of the item:", ""));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, "Invalid quantity");
+			return;
+		}
+		
+		int idNumber = 0;
+		
+		for(Product item : market.getInventory()){
+			if(item.getIDNumber() >= idNumber){
+				idNumber = item.getIDNumber() + 1;
+			}
+		}
+		
+		((Seller) user).addToInvetory(new Product(idNumber, user.getIdNumber(), quantity, name, description, price));
 		
 	}
 	
@@ -590,10 +730,9 @@ public class Interface {
         @Override
         public void actionPerformed(ActionEvent e) {
         	
-            	if (e.getSource() == face.login || e.getSource() == face.mLogout) {
+            	if (e.getSource() == face.login) {
                 	Person person = userLookup(username.getText(), pass.getText());
                 	
-                		
                 	if(person == null){
                 		JOptionPane popup = new JOptionPane("Invalid login");
                 		popup.showMessageDialog(face.frame, "Invalid Login Information");
@@ -607,9 +746,6 @@ public class Interface {
                 	else if(person instanceof Buyer){
                 		face.buyerPage((Buyer) person);
                 	}
-                	
-                	else
-                		System.out.println("its not a person or a buyer.....");//this shouldnt happen remove after bug testing
                 	
                 	face.user = person;
                 }
@@ -649,7 +785,7 @@ public class Interface {
             	}
             	
             	else if(e.getSource() == face.mLogout){
-            		face.loginPage();
+            		System.exit(0);
             	}
            
         }

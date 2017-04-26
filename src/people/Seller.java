@@ -81,4 +81,8 @@ public class Seller extends Person implements Admin {
         }
         new Marketplace().updateDescription(id, description);
     }
+
+    public void addToInvetory(Product item){
+    	this.addInventory(item);
+    }
 }

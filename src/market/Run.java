@@ -9,8 +9,8 @@ import people.Seller;
 public class Run {
 
     public static void main(String[] args) {
-        Interface face = new Interface();
+    	Interface face = new Interface();
         //face.sellerPage(new Seller(1, "Rocco", "email", "asgd", null));
-    }
+	}
 
 }
