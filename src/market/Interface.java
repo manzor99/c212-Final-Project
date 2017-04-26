@@ -439,14 +439,12 @@ public class Interface {
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
-		String[][] items = new String[market.getInventory().size()][4];
-		
+		String[][] items = new String[user.getInventory().size()][4];
 		for(int i = 0; i < items.length; i++){
 			items[i][0] = user.getInventory().get(i).getName();
 			items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
 			items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
 			items[i][3] = user.getInventory().get(i).getDescription();
-			System.out.println(items[i][0]);
 		}
 		
 		inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
@@ -607,10 +605,25 @@ public class Interface {
 				items[i][3] = user.getInventory().get(i).getDescription();
 				
 			}
-			
+			if(inventoryDisplay != null){
+				inventoryDisplay.setVisible(false);
+				panel.remove(inventoryDisplay);
+			}
+				
 			inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
 			DefaultTableModel dtm = new DefaultTableModel(items, colNames);
 			inventoryDisplay.setModel(dtm);
+			
+			layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
+			        220,
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
+			        160,
+			        SpringLayout.NORTH, panel);
+			
+			inventoryDisplay.setVisible(true);
+			panel.add(inventoryDisplay);
 	
 		}
 	
@@ -625,17 +638,20 @@ public class Interface {
 		
 		Object[] items = new Object[user.getInventory().size()];
 		int quantity;
+		Product item = null;
 		
 		for (int i = 0; i < items.length; i++) {
 			items[i] = user.getInventory().get(i).getName();
 		}
 		
-		String item = (String) JOptionPane.showInputDialog(frame, "Which item would you like to add more of?",
+		String itemName = (String) JOptionPane.showInputDialog(frame, "Which item would you like to add more of?",
 		        "Items", JOptionPane.QUESTION_MESSAGE, null,                                       
 		        items,
 		        items[0]);
 		
-		if(item == null)
+		
+		
+		if(itemName == null)
 			return;
 		else{
 			
@@ -646,6 +662,16 @@ public class Interface {
 				return;
 			}
 			
+			for (Product p : user.getInventory()) {
+				if(itemName.equals(p.getName())){
+					item = p;
+					break;
+				}
+					
+			}
+			
+			((Seller) user).updateQuantity(item.getIDNumber(), item.getQuantity() + quantity);
+			sellerPage((Seller) user);
 		}
 		
 		
@@ -687,8 +713,11 @@ public class Interface {
 			}
 		}
 		
-		((Seller) user).addToInvetory(new Product(idNumber, user.getIdNumber(), quantity, name, description, price));
+		Product item = new Product(idNumber, user.getIdNumber(), quantity, name, description, price);
+		((Seller) user).addToInvetory(item);
+		market.updatePersonalInventory(user, item);
 		
+		sellerPage((Seller) user);
 	}
 	
 	public void loadItemsToBuy() {

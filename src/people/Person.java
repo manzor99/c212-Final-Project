@@ -12,6 +12,7 @@ public abstract class Person {
     private int idNumber;
     private String name, email, password;
     private ArrayList<Product> personalInv;
+    private FileHandler f;
     
     // Person constructor
     public Person(int idNumber, String name, String email, String password, ArrayList<Product> personalInv) {
@@ -20,6 +21,7 @@ public abstract class Person {
         this.email = email;
         this.password = password;
         this.personalInv = personalInv;
+        f = new FileHandler();
     }
     
     /**
