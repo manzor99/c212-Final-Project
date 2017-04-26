@@ -54,11 +54,10 @@ public class Interface {
 		JMenuItem removeItem;
 	
     JMenu navigate;
-    JMenuItem mLogin;
+    JMenuItem mLogout;
     JMenuItem mCreate;
 
     Person user; //user that is currently logged in
-    String page; //login buyer or seller (might be removed) ********
     
     public Interface() { //login page
     	
@@ -94,7 +93,7 @@ public class Interface {
 		sellers.add(removeItem);
 		
 		navigate = new JMenu("Navigate");
-		mLogin = new JMenuItem("login");
+		mLogout = new JMenuItem("logout");
 		mCreate = new JMenuItem("Create Account");
 		
 		
@@ -104,7 +103,7 @@ public class Interface {
 		menuBar.add(this.buyers);
 		menuBar.add(this.sellers);
 		
-		navigate.add(mLogin);
+		navigate.add(mLogout);
 		navigate.add(mCreate);
 		
 		
@@ -155,7 +154,7 @@ public class Interface {
 	
 	public void loginPage(){
 		
-		page = "login";
+		user = null;
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
 		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
 				
@@ -270,65 +269,8 @@ public class Interface {
 	}
 	
 	public void buyerPage(Buyer buy){
-		page = "buyer";
 		
-		frame.setVisible(false);
-		
-		usernameLbl.setText("Welcome " + buy.getName() + "!");
-		usernameLbl.setPreferredSize(new Dimension(200, 100));
-		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 24)); //might need to change font size *****
-		
-		inventoryDisplay = new JTable(50, 4);
-		
-		//panel
-		layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
-		        220,
-		        SpringLayout.WEST, panel);
-				
-		layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
-		        160,
-		        SpringLayout.NORTH, panel);
-		
-		panel.add(inventoryDisplay);
-		//end panel
-		
-		//welcome lbl
-		layout.putConstraint(SpringLayout.WEST, usernameLbl,
-		        300,
-		        SpringLayout.WEST, panel);
-				
-		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
-		        50,
-		        SpringLayout.NORTH, panel);
-		//end welcome
-		
-
-		//inventory label
-		passLbl.setText("Inventory");
-		
-		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); //might need to change font size *****
-		
-		layout.putConstraint(SpringLayout.WEST, passLbl,
-		        343,
-		        SpringLayout.WEST, panel);
-				
-		layout.putConstraint(SpringLayout.NORTH, passLbl,
-		        125,
-		        SpringLayout.NORTH, panel);
-		//end inventory
-		
-		pass.setVisible(false);
-		login.setVisible(false);
-		username.setVisible(false);
-		createAcc.setVisible(false);
-		
-		frame.pack();
-		frame.setVisible(true);
-	}
-	
-	public void sellerPage(Seller sell){
-		page = "seller";
-		
+		user = buy;
 		frame.setVisible(false);
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
@@ -379,13 +321,104 @@ public class Interface {
 		//panel.add(inventoryDisplay);
 		//end panel
 		
-		usernameLbl.setText("Welcome " + sell.getName() + "!");
+		usernameLbl.setText("Welcome " + user.getName() + "!");
 		usernameLbl.setPreferredSize(new Dimension(200, 100));
 		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 24)); //might need to change font size *****
 		
 		//welcome lbl
 		layout.putConstraint(SpringLayout.WEST, usernameLbl,
-		        300,
+		        305,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
+		        50,
+		        SpringLayout.NORTH, panel);
+		//end welcome
+		
+
+		//inventory label
+		passLbl.setText("Items being sold");
+		
+		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); //might need to change font size *****
+		
+		layout.putConstraint(SpringLayout.WEST, passLbl,
+		        327,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, passLbl,
+		        125,
+		        SpringLayout.NORTH, panel);
+		//end inventory
+		
+		pass.setVisible(false);
+		login.setVisible(false);
+		username.setVisible(false);
+		createAcc.setVisible(false);
+		
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	//do these two methods really need the argument??V^
+	public void sellerPage(Seller sell){
+		
+		user = sell;
+		frame.setVisible(false);
+		
+		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
+		
+		String[][] items = new String[market.getInventory().size()][4];
+		
+		for(int i = 0; i < items.length; i++){
+			items[i][0] = user.getInventory().get(i).getName();
+			items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
+			items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
+			items[i][3] = user.getInventory().get(i).getDescription();
+			
+		}
+		
+		inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
+		DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+		inventoryDisplay.setModel(dtm);
+		
+		
+		JScrollPane pane = new JScrollPane(inventoryDisplay);
+		pane.setPreferredSize(new Dimension(300, 200));
+		
+		//scroll pane
+		
+		layout.putConstraint(SpringLayout.WEST, pane,
+		        220,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, pane,
+		        160,
+		        SpringLayout.NORTH, panel);
+
+		
+		//end scroll
+		
+		
+		//panel
+		layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
+		        220,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
+		        160,
+		        SpringLayout.NORTH, panel);
+		
+		panel.add(pane);
+		//panel.add(inventoryDisplay);
+		//end panel
+		
+		usernameLbl.setText("Welcome " + user.getName() + "!");
+		usernameLbl.setPreferredSize(new Dimension(200, 100));
+		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 24)); //might need to change font size *****
+		
+		//welcome lbl
+		layout.putConstraint(SpringLayout.WEST, usernameLbl,
+		        305,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
@@ -477,7 +510,63 @@ public class Interface {
 		
 		return true;
 	}
+	
+	//**********VVVVVVVVVVVVVVVVVVVVVV*************
+	
+	public void loadSellerInventory() {
+		if(user == null || !(user instanceof Seller)){
+			JOptionPane popup = new JOptionPane("Invalid User");
+    		popup.showMessageDialog(frame, "Must be logged in as a seller to do that.");
+    		return;
+		}
+		else{
+			
+			this.sellerPage((Seller) user);
+			
+			String[] colNames = {"Name", "Price", "Quantity", "Decription"};
+			String[][] items = new String[market.getInventory().size()][4];
+			
+			for(int i = 0; i < items.length; i++){
+				items[i][0] = user.getInventory().get(i).getName();
+				items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
+				items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
+				items[i][3] = user.getInventory().get(i).getDescription();
+				
+			}
+			
+			inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
+			DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+			inventoryDisplay.setModel(dtm);
+	
+		}
+	
+	}
+	public void addExistingItem() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void addNewItem() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void loadItemsToBuy() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	public void removeItem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void loadPurchaseHistory() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//*******^^^^^^^^^^^^^^^^^^^^^^^^^^*************
     private class UserListener implements ActionListener {
 
         Interface face;
@@ -494,17 +583,14 @@ public class Interface {
             face.purchaseHistory.addActionListener(this);
 			face.shop.addActionListener(this);
 			face.mCreate.addActionListener(this);
-			face.mLogin.addActionListener(this);
+			face.mLogout.addActionListener(this);
 
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
         	
-            if(face.page.equals("login")){
-            	
-            	
-            	if (e.getSource() == face.login || e.getSource() == face.mLogin) {
+            	if (e.getSource() == face.login || e.getSource() == face.mLogout) {
                 	Person person = userLookup(username.getText(), pass.getText());
                 	
                 		
@@ -527,23 +613,49 @@ public class Interface {
                 	
                 	face.user = person;
                 }
-            	
-            	else if(e.getSource() == face.createAcc || e.getSource() == face.mCreate){
+            	else if(e.getSource() == face.createAcc){
             		face.createAccount();
             	}
-            
-            }
-            else if(page.equals("buyer")){}
+            	else if(e.getSource() == face.mCreate){
+            		face.loginPage();
+            	}
             	
-            else if(page.equals("seller")){}
-            	            	
-            else
-            	System.out.println("error");//this should never occur remove after testing
-             
+            	else if(e.getSource() == face.yourInventory){
+            		face.loadSellerInventory();
+            	}
+            	
+            	else if(e.getSource() == face.existingItem){
+            		face.addExistingItem();
+            	}
+            	
+            	else if(e.getSource() == face.newItem){
+            		face.addNewItem();
+            	}
             
+            	else if(e.getSource() == face.removeItem){
+            		face.removeItem();
+            	}
+            	
+            	else if(e.getSource() == face.purchaseHistory){
+            		face.loadPurchaseHistory();
+            	}
+            	
+            	else if(e.getSource() == face.shop){
+            		face.loadItemsToBuy();
+            	}
+            	
+            	else if(e.getSource() == face.mCreate){
+            		face.loginPage();
+            	}
+            	
+            	else if(e.getSource() == face.mLogout){
+            		face.loginPage();
+            	}
+           
         }
 
     }
-    
+	
+
 
 }
