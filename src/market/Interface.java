@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -56,6 +57,7 @@ public class Interface {
     JMenuItem mLogin;
     JMenuItem mCreate;
 
+    Person user; //user that is currently logged in
     String page; //login buyer seller or admin
     
     public Interface() { //login page
@@ -418,7 +420,7 @@ public class Interface {
 	public boolean createAccount(){
 		JOptionPane popup = new JOptionPane();
 		
-		if(! username.getText().contains("@")){
+		if(! (username.getText().contains("@") && username.getText().contains(".")) && ! pass.getText().equals("")){
 			
 			popup.showMessageDialog(frame, "Invalid email");
 			return false;
@@ -439,6 +441,31 @@ public class Interface {
 		}
 		
 		//add the create an account stuff
+		Object[] options = {"Buyer", "Seller"};
+		//int response = 
+		int choice = JOptionPane.showOptionDialog(//0 is buyer 1 is seller
+				frame, 
+			    "Are you a buyer or a seller?",
+			    "Account Type",
+			    JOptionPane.YES_NO_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,     
+			    options,  
+			    options[0]); 
+		
+		String name = (String)JOptionPane.showInputDialog(
+                frame, "Enter your name:", "");
+		
+		if(choice == 1){
+			user = new Seller(5, name, username.getText(),  pass.getText(), new ArrayList<Product>());
+			
+		}
+		else{
+			user = new Buyer(5, name, username.getText(),  pass.getText(), new ArrayList<Product>());
+			
+		}
+				
+		market.addPerson(user);
 		
 		return true;
 	}
@@ -465,32 +492,46 @@ public class Interface {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            if (e.getSource() == face.login || e.getSource() == face.mLogin) {
-            	Person person = userLookup(username.getText(), pass.getText());
-            	if(page.equals("login")){
-            		
-            		if(person == null){
-            			JOptionPane popup = new JOptionPane("Invalid login");
-            			popup.showMessageDialog(face.frame, "Invalid Login Information");
-            			
-            		}
+        	
+            if(face.page.equals("login")){
+            	
+            	
+            	if (e.getSource() == face.login || e.getSource() == face.mLogin) {
+                	Person person = userLookup(username.getText(), pass.getText());
+                	
+                		
+                	if(person == null){
+                		JOptionPane popup = new JOptionPane("Invalid login");
+                		popup.showMessageDialog(face.frame, "Invalid Login Information");
+                			
+                	}
+                	
+                	else if(person instanceof Seller){
+                		face.sellerPage((Seller) person);
+                	}
+                	
+                	else if(person instanceof Buyer){
+                		face.buyerPage((Buyer) person);
+                	}
+                	
+                	else
+                		System.out.println("its not a person or a buyer.....");//this shouldnt happen remove after bug testing
+                	
+                	face.user = person;
+                }
+            	
+            	else if(e.getSource() == face.createAcc || e.getSource() == face.mCreate){
+            		face.createAccount();
             	}
-            	
-            	else if(page.equals("buyer"))
-            		face.buyerPage((Buyer)person);
-            	
-            	else if(page.equals("seller"))
-            		face.sellerPage((Seller) person);
-            	
-            	else if(page.equals("admin"))
-            		System.out.println("admin"); //make admin page******
-            	
-            	else
-            		System.out.println("error");//this should never occur remove after testing
-            } else if (e.getSource() == face.createAcc || e.getSource() == face.mCreate) {
-                System.out.println("create");
+            
             }
+            else if(page.equals("buyer")){}
+            	
+            else if(page.equals("seller")){}
+            	            	
+            else
+            	System.out.println("error");//this should never occur remove after testing
+             
             
         }
 
