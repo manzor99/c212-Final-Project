@@ -11,7 +11,7 @@ public abstract class Person {
     
     private int idNumber;
     private String name, email, password;
-    private ArrayList<Product> personalInv;
+    protected ArrayList<Product> personalInv;
     private FileHandler f;
     
     // Person constructor

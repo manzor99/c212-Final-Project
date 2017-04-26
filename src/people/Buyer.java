@@ -25,10 +25,23 @@ public class Buyer extends Person {
      */
     public String buyProduct(int id) {
         ArrayList<Product> inv = f.fillInventory();
+        Product tempP;
         for (Product p : inv) {
             if (p.getIDNumber() == id && p.getQuantity() > 0) {
-                p.setQuantity(p.getQuantity() - 1);
+                tempP = p;
+            	p.setQuantity(p.getQuantity() - 1);
                 f.updateProducts(inv);
+                
+                for (int i = 0; i < personalInv.size(); i++) {
+					if(id == personalInv.get(i).getIDNumber()){
+						personalInv.get(i).setQuantity(personalInv.get(i).getQuantity() + 1);
+						break;
+					}
+					else if(i == personalInv.size() - 1){
+						personalInv.add(new Product(tempP.getIDNumber(), this.getIdNumber(), 1, tempP.getName(), tempP.getDescription(), tempP.getPrice()));
+					}
+				}
+                
                 return "You have purchased " + p.getName() + " for " + p.getPrice();
             }
         }

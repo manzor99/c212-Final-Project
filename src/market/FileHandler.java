@@ -9,13 +9,14 @@ import people.*;
  */
 public class FileHandler {
 
-    private File buyers, sellers;
+    private File buyers, sellers, inventory;
     private Scanner scanner;
     private FileWriter writer;
 
     public FileHandler() {  // Constructor for instantiating all files 
         buyers = new File("Buyers.csv");
         sellers = new File("Sellers.csv");
+        inventory = new File("Inventory.csv");
     }
 
     /**
@@ -66,7 +67,29 @@ public class FileHandler {
     }
 
     /**
-     * Fill ArrayList from Sellers file
+     * Method to update Products file
+     *
+     * @param inventoryList The list of inventory
+     */
+    public void updateProducts(ArrayList<Product> inventoryList) {
+        try {
+            writer = new FileWriter(inventory);
+            writer.append("ID,Name,Description,Price,Quantity,SellerID");  // Append the header
+            String toAppend;
+
+            for (Product p : inventoryList) {
+                toAppend = p.getIDNumber() + "," + p.getName() + "," + p.getDescription()
+                        + "," + p.getPrice() + "," + p.getQuantity() + "," + p.getSellerId();
+                writer.append("\n" + toAppend);
+            }
+
+            writer.close();
+        } catch (IOException e) {
+        }
+    }
+
+    /**
+     * Fill ArrayList from Inventory file
      *
      * @return The ArrayList version
      */
@@ -74,25 +97,18 @@ public class FileHandler {
         ArrayList<Product> list = new ArrayList<>();
 
         try {
-            scanner = new Scanner(sellers);
+            scanner = new Scanner(inventory);
             if (scanner.hasNextLine()) {
                 scanner.nextLine();
                 while (scanner.hasNextLine()) {
                     String[] line = scanner.nextLine().trim().split(",");
-                    String[] inventory = line[4].split(":");
-
-                    if (!inventory.equals("[]")) {
-                        for (String s : inventory) {
-                            list.add(stringToProduct(s));
-                        }
-                    }
+                    list.add(new Product(Integer.valueOf(line[0]), Integer.valueOf(line[5]),
+                            Integer.valueOf(line[4]), line[1], line[2], Double.valueOf(line[3])));
                 }
             }
-            
         } catch (FileNotFoundException | NumberFormatException e) {
+            System.out.println(e);
         }
-        
-        scanner.close();
         return list;
     }
 
@@ -111,13 +127,12 @@ public class FileHandler {
                 while (scanner.hasNextLine()) {
                     String[] line = scanner.nextLine().trim().split(",");
                     list.add(new Buyer(Integer.valueOf(line[0]), line[1], line[2], line[3],
-                            stringToArrayList(line[4])));
+                            stringToProduct(line[4])));
                 }
             }
         } catch (FileNotFoundException | NumberFormatException e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
-        
-        scanner.close();
 
         return list;
     }
@@ -137,14 +152,13 @@ public class FileHandler {
                 while (scanner.hasNextLine()) {
                     String[] line = scanner.nextLine().trim().split(",");
                     list.add(new Seller(Integer.valueOf(line[0]), line[1], line[2], line[3],
-                            stringToArrayList(line[4])));
+                            stringToProduct(line[4])));
                 }
             }
 
         } catch (FileNotFoundException | NumberFormatException e) {
         }
-        
-        scanner.close();
+
         return list;
     }
 
@@ -154,7 +168,7 @@ public class FileHandler {
      * @param x The string
      * @return The list version
      */
-    private ArrayList<Product> stringToArrayList(String x) {
+    private ArrayList<Product> stringToProduct(String x) {
         ArrayList<Product> list = new ArrayList<>();
         String newString = x.trim().substring(1, x.length() - 1);
         String[] rows = newString.split(";");
@@ -169,22 +183,5 @@ public class FileHandler {
         }
 
         return list;
-    }
-
-    /**
-     * Method that parses String and turns it into Product
-     *
-     * @param x The string to parse
-     * @return Product version of String
-     */
-    private Product stringToProduct(String x) {
-        String newString = x.trim().substring(1, x.length() - 1);
-        String[] line = newString.split(":");
-
-        Product p = new Product(Integer.valueOf(line[0].trim()),
-                Integer.valueOf(line[5].trim()), Integer.valueOf(line[4].trim()),
-                line[1].trim(), line[2].trim(), Double.valueOf(line[3].trim()));
-
-        return p;
     }
 }

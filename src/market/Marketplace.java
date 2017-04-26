@@ -307,4 +307,8 @@ public class Marketplace implements Admin {
     public ArrayList<Product> getInventory() {
         return inventory;
     }
+
+    public FileHandler getFileHandler(){
+    	return this.f;
+    }
 }

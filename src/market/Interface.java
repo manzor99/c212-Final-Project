@@ -45,6 +45,7 @@ public class Interface {
 	JMenu buyers;
 		JMenuItem purchaseHistory;
 		JMenuItem shop;
+		JMenuItem purchase;
 		
 	JMenu sellers;
 		JMenuItem yourInventory;
@@ -84,8 +85,10 @@ public class Interface {
 		buyers = new JMenu("Buyers");
 			purchaseHistory = new JMenuItem("Purchase History");
 			shop = new JMenuItem("Shop");
+			purchase = new JMenuItem("Purchase");
 			buyers.add(purchaseHistory);
-			buyers.add(shop);			
+			buyers.add(shop);
+			buyers.add(purchase);
 			
 		sellers = new JMenu("Sellers");
 			yourInventory = new JMenuItem("Your Inventory");
@@ -340,9 +343,8 @@ public class Interface {
 		
 	}
 	
-	public void buyerPage(Buyer buy){
+	public void buyerPage(){
 		
-		user = buy;
 		frame.setVisible(false);
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
@@ -437,9 +439,8 @@ public class Interface {
 	}
 	
 	//do these two methods really need the argument??V^
-	public void sellerPage(Seller sell){
+	public void sellerPage(){
 		
-		user = sell;
 		frame.setVisible(false);
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
@@ -598,7 +599,7 @@ public class Interface {
 		}
 		else{
 			
-			this.sellerPage((Seller) user);
+			this.sellerPage();
 			
 			String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 			String[][] items = new String[market.getInventory().size()][4];
@@ -679,7 +680,7 @@ public class Interface {
 			}
 			
 			((Seller) user).updateQuantity(item.getIDNumber(), item.getQuantity() + quantity);
-			sellerPage((Seller) user);
+			sellerPage();
 		}
 		
 		
@@ -725,7 +726,7 @@ public class Interface {
 		((Seller) user).addToInvetory(item);
 		market.updatePersonalInventory(user, item);
 		market.addProduct(item); //remove when andrew implements the stuff************
-		sellerPage((Seller) user);
+		sellerPage();
 	}
 	
 	public void loadItemsToBuy() {
@@ -755,6 +756,69 @@ public class Interface {
 		
 	}
 
+	
+	public void buyItem() {
+		
+		if(user == null || !(user instanceof Buyer)){
+			JOptionPane.showMessageDialog(frame, "Must be logged in as a buyer to do that.");
+    		return;
+		}
+		
+		Object[] items = new Object[market.getInventory().size()];
+		
+		int quantity;
+		Product item = null;
+		
+		for (int i = 0; i < items.length; i++) {
+			items[i] = market.getInventory().get(i).getName();
+		}
+		
+		String itemName = (String) JOptionPane.showInputDialog(frame, "Which item would you like to purchase?",
+		        "Items", JOptionPane.QUESTION_MESSAGE, null,                                       
+		        items,
+		        items[0]);
+		
+		
+		
+		if(itemName == null)
+			return;
+		else{
+			
+			try {
+				quantity = Integer.parseInt((String)JOptionPane.showInputDialog(frame, "How many of this item would you like to purchase?", ""));
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(frame, "Invalid quantity");
+				return;
+			}
+			
+			for (Product p : market.getInventory()) {
+				if(itemName.equals(p.getName())){
+					item = p;
+					break;
+				}
+					
+			}
+			
+			if(quantity > item.getQuantity()){
+				JOptionPane.showMessageDialog(frame, "Invalid quantity");
+				return;
+			}
+			
+			
+			
+			
+			for (int i = 0; i < quantity; i++) {
+				((Buyer)user).buyProduct(item.getIDNumber());
+				((Buyer)user).buyProduct(item.getIDNumber());
+			}
+			
+		}
+		
+		market.getFileHandler().updateBuyers(market.getBuyers());
+		market.getFileHandler().updateSellers(market.getSellers());
+		
+	}
+	
 	//needs to be testedVVVVVVVV*************
 	public void loadPurchaseHistory() {
 
@@ -765,12 +829,15 @@ public class Interface {
 		}
 		else{
 			
-			this.buyerPage((Buyer) user);
+			this.buyerPage();
 			
 			panel.remove(inventoryDisplay);
 			
 			String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 			String[][] items = new String[user.getInventory().size()][4];
+			
+			DefaultTableModel model = (DefaultTableModel) inventoryDisplay.getModel();
+			model.getDataVector().removeAllElements();
 			
 			for(int i = 0; i < items.length; i++){
 				items[i][0] = user.getInventory().get(i).getName();
@@ -784,7 +851,7 @@ public class Interface {
 				panel.remove(inventoryDisplay);
 			}
 				
-			inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
+			inventoryDisplay = new JTable(user.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
 			DefaultTableModel dtm = new DefaultTableModel(items, colNames);
 			inventoryDisplay.setModel(dtm);
 			
@@ -800,7 +867,7 @@ public class Interface {
 			inventoryDisplay.repaint();
 			panel.add(inventoryDisplay);
 			panel.repaint();
-			frame.repaint();
+			//frame.repaint();
 		
 		}
 	}
@@ -823,6 +890,7 @@ public class Interface {
 			face.shop.addActionListener(this);
 			face.mCreate.addActionListener(this);
 			face.mLogout.addActionListener(this);
+			face.purchase.addActionListener(this);
 
         }
 
@@ -839,14 +907,15 @@ public class Interface {
                 	}
                 	
                 	else if(person instanceof Seller){
-                		face.sellerPage((Seller) person);
+                		face.user = person;
+                		face.sellerPage();
                 	}
                 	
                 	else if(person instanceof Buyer){
-                		face.buyerPage((Buyer) person);
+                		face.user = person;
+                		face.buyerPage();
                 	}
                 	
-                	face.user = person;
                 }
             	else if(e.getSource() == face.createAcc){
             		face.createAccount();
@@ -879,14 +948,18 @@ public class Interface {
             		face.loginPage();
             	}
             	
+            	else if(e.getSource() == face.purchase){
+            		face.buyItem();
+            	}
+            	
             	else if(e.getSource() == face.mLogout){
             		System.exit(0);
             	}
+            	
+            	
            
         }
 
     }
-	
-
 
 }
