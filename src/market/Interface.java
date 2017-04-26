@@ -348,7 +348,7 @@ public class Interface {
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
 		String[][] items = new String[market.getInventory().size()][4];
-		
+		//the market doesn't load the inventory*************
 		for(int i = 0; i < items.length; i++){
 			
 			items[i][0] = market.getInventory().get(i).getName();
@@ -427,8 +427,13 @@ public class Interface {
 		username.setVisible(false);
 		createAcc.setVisible(false);
 		
+		usernameLbl.setVisible(true);
+		passLbl.setVisible(true);
+		
 		frame.pack();
 		frame.setVisible(true);
+		panel.repaint();
+		frame.repaint();
 	}
 	
 	//do these two methods really need the argument??V^
@@ -526,7 +531,7 @@ public class Interface {
 		JOptionPane popup = new JOptionPane();
 		int largestID = 0; //nobody will have a negative ID
 		
-		if(! (username.getText().contains("@") && username.getText().contains(".")) && ! pass.getText().equals("")){
+		if(username.getText() == null || ! (username.getText().contains("@") && username.getText().contains(".")) && pass.getText() == null){
 			
 			popup.showMessageDialog(frame, "Invalid email");
 			return false;
@@ -623,7 +628,10 @@ public class Interface {
 			        SpringLayout.NORTH, panel);
 			
 			inventoryDisplay.setVisible(true);
+			inventoryDisplay.repaint();
 			panel.add(inventoryDisplay);
+			panel.repaint();
+			frame.repaint();
 	
 		}
 	
@@ -716,23 +724,85 @@ public class Interface {
 		Product item = new Product(idNumber, user.getIdNumber(), quantity, name, description, price);
 		((Seller) user).addToInvetory(item);
 		market.updatePersonalInventory(user, item);
-		
+		market.addProduct(item); //remove when andrew implements the stuff************
 		sellerPage((Seller) user);
 	}
 	
 	public void loadItemsToBuy() {
-		// TODO Auto-generated method stub
+
+		if(user == null || !(user instanceof Buyer)){
+			JOptionPane.showMessageDialog(frame, "Must be logged in as a buyer to do that.");
+    		return;
+    		
+		}
+		
+		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
+		
+		String[][] items = new String[market.getInventory().size()][4];
+		//the market doesn't load the inventory*************
+		for(int i = 0; i < items.length; i++){
+			
+			items[i][0] = market.getInventory().get(i).getName();
+			items[i][1] = "$" + Double.toString(market.getInventory().get(i).getPrice());
+			items[i][2] = Integer.toString(market.getInventory().get(i).getQuantity());
+			items[i][3] = market.getInventory().get(i).getDescription();
+			
+		}
+		
+		inventoryDisplay = new JTable(market.getInventory().size(), 4);
+		DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+		inventoryDisplay.setModel(dtm);
 		
 	}
 
-	public void removeItem() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	//needs to be testedVVVVVVVV*************
 	public void loadPurchaseHistory() {
-		// TODO Auto-generated method stub
+
+		if(user == null || !(user instanceof Buyer)){
+			JOptionPane popup = new JOptionPane("Invalid User");
+    		popup.showMessageDialog(frame, "Must be logged in as a buyer to do that.");
+    		return;
+		}
+		else{
+			
+			this.buyerPage((Buyer) user);
+			
+			panel.remove(inventoryDisplay);
+			
+			String[] colNames = {"Name", "Price", "Quantity", "Decription"};
+			String[][] items = new String[user.getInventory().size()][4];
+			
+			for(int i = 0; i < items.length; i++){
+				items[i][0] = user.getInventory().get(i).getName();
+				items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
+				items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
+				items[i][3] = user.getInventory().get(i).getDescription();
+				
+			}
+			if(inventoryDisplay != null){
+				inventoryDisplay.setVisible(false);
+				panel.remove(inventoryDisplay);
+			}
+				
+			inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
+			DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+			inventoryDisplay.setModel(dtm);
+			
+			layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
+			        220,
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
+			        160,
+			        SpringLayout.NORTH, panel);
+			
+			inventoryDisplay.setVisible(true);
+			inventoryDisplay.repaint();
+			panel.add(inventoryDisplay);
+			panel.repaint();
+			frame.repaint();
 		
+		}
 	}
 	
 	//*******^^^^^^^^^^^^^^^^^^^^^^^^^^*************
@@ -795,10 +865,6 @@ public class Interface {
             	
             	else if(e.getSource() == face.newItem){
             		face.addNewItem();
-            	}
-            
-            	else if(e.getSource() == face.removeItem){
-            		face.removeItem();
             	}
             	
             	else if(e.getSource() == face.purchaseHistory){
