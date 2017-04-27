@@ -16,7 +16,6 @@ public class Run {
 
     public static void main(String[] args) {
     	Interface face = new Interface();
-        //face.buyerPage(new buyer(1, "Rocco", "email", "asgd", null));
 	}
 
 }

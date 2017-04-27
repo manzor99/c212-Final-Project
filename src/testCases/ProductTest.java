@@ -4,66 +4,79 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import market.Product;
+
 public class ProductTest {
 
 	@Test
-	public void testProduct() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testGetIDNumber() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals(1, p.getIDNumber());
 	}
 
 	@Test
 	public void testSetIdNumber() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		p.setIdNumber(99);
+		assertEquals(99, p.getIDNumber());
 	}
-
+	//Product(int idNumber, int sellerId, int quantity, String name, String description, double price)
 	@Test
 	public void testGetSellerId() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals(10, p.getSellerId());
 	}
 
 	@Test
 	public void testGetQuantity() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals(7, p.getQuantity());
 	}
 
 	@Test
 	public void testSetQuantity() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		p.setQuantity(99);
+		assertEquals(99, p.getQuantity());
 	}
 
 	@Test
 	public void testGetName() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals("item", p.getName());
 	}
 
 	@Test
 	public void testSetName() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		p.setName("Rocco");
+		assertEquals("Rocco", p.getName());
 	}
 
 	@Test
 	public void testGetDescription() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals("an item", p.getDescription());
 	}
 
 	@Test
 	public void testSetDescription() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		p.setDescription("a new description");
+		assertEquals("a new description", p.getDescription());
 	}
 
 	@Test
 	public void testGetPrice() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		assertEquals((int)5.5, (int)p.getPrice());
 	}
 
 	@Test
 	public void testSetPrice() {
-		fail("Not yet implemented");
+		Product p = new Product(1, 10, 7, "item", "an item", 5.5);
+		p.setPrice(10);
+		assertEquals(10, (int)p.getPrice());
 	}
 
 }

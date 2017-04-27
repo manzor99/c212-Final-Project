@@ -1,5 +1,6 @@
 package market;
 
+//wont let me use the * notation
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,12 +20,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.table.DefaultTableModel; //idk why i need this import but it gives an error without it
+import javax.swing.table.DefaultTableModel; 
 
 import people.Buyer;
 import people.Person;
 import people.Seller;
 
+/**
+ * @author Rocco
+ *
+ */
 public class Interface {
     
 	Marketplace market;
@@ -39,16 +44,15 @@ public class Interface {
     JLabel inventory;
     JLabel buyersLbl;
     JLabel sellersLbl;
+    JLabel historyLbl;
     UserListener listen;
     JTable inventoryDisplay;
     JTable history;
     SpringLayout layout;
-    
+ 
     JMenuBar menuBar;
     
 	JMenu buyers;
-		JMenuItem purchaseHistory;
-		JMenuItem shop;
 		JMenuItem purchase;
 		
 	JMenu sellers;
@@ -56,16 +60,15 @@ public class Interface {
 		JMenu addItem;
 			JMenuItem existingItem;
 			JMenuItem newItem;
-		JMenuItem removeItem;
 	
     JMenu navigate;
-    JMenuItem mLogout;
-    JMenuItem mCreate;
+    	JMenuItem mLogout;
 
     Person user; //user that is currently logged in
     
-    //remove popup variable and use static method instead************** 
-    
+    /*
+     * Creates an instance of the Interface class 
+     */
     public Interface() { //login page
     	
     	layout = new SpringLayout();
@@ -87,53 +90,31 @@ public class Interface {
 		
 
 		buyers = new JMenu("Buyers");
-			purchaseHistory = new JMenuItem("Purchase History");
-			shop = new JMenuItem("Shop");
+			
 			purchase = new JMenuItem("Purchase");
-			buyers.add(purchaseHistory);
-			buyers.add(shop);
 			buyers.add(purchase);
 			
 		sellers = new JMenu("Sellers");
 			yourInventory = new JMenuItem("Your Inventory");
 			addItem = new JMenu("Add Items");
-				existingItem = new JMenuItem("Existing Item");
+				existingItem = new JMenuItem("Change Quantity of Existing Item");
 				newItem = new JMenuItem("New Item");
-			removeItem = new JMenuItem("Remove Item");
 			
 		
 		sellers.add(yourInventory);
 		sellers.add(addItem);
 		addItem.add(existingItem);
 		addItem.add(newItem);
-		sellers.add(removeItem);
 		
 		navigate = new JMenu("Navigate");
 		mLogout = new JMenuItem("logout");
-		mCreate = new JMenuItem("Create Account");
 		
 		
 		menuBar.add(navigate);
-		//menuBar.add(help);
-		//menuBar.add(info);
 		menuBar.add(this.buyers);
 		menuBar.add(this.sellers);
 		
 		navigate.add(mLogout);
-		navigate.add(mCreate);
-		
-		
-		/*
-		help = new JMenu("Help");
-			helpItem = new JMenuItem("Help");
-			help.add(helpItem);
-			
-		info = new JMenu("Info");
-			aboutUs = new JMenuItem("About Us");
-			info.add(aboutUs);
-			*/
-		
-			
 			
 		menuBar.setVisible(true);
 		frame.setJMenuBar(menuBar);
@@ -145,65 +126,13 @@ public class Interface {
         
     }
 
-    /*
-    public void frameSetup(){
-    	layout = new SpringLayout();
-		panel = new JPanel();
-		usernameLbl = new JLabel("Email: ");
-		username = new JTextField();
-		pass = new JPasswordField();
-		passLbl = new JLabel("Password: ");
-		login = new JButton("Login");
-		createAcc = new JButton("Create");
-		//frame
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//end frame
-		
-		//menuBar
-		menuBar = new JMenuBar();
-		
-
-		buyers = new JMenu("Buyers");
-			purchaseHistory = new JMenuItem("Purchase History");
-			shop = new JMenuItem("Shop");
-			buyers.add(purchaseHistory);
-			buyers.add(shop);			
-			
-		sellers = new JMenu("Sellers");
-			yourInventory = new JMenuItem("Your Inventory");
-			addItem = new JMenu("Add Items");
-				existingItem = new JMenuItem("Existing Item");
-				newItem = new JMenuItem("New Item");
-			removeItem = new JMenuItem("Remove Item");
-			
-		
-		sellers.add(yourInventory);
-		sellers.add(addItem);
-		addItem.add(existingItem);
-		addItem.add(newItem);
-		sellers.add(removeItem);
-		
-		navigate = new JMenu("Navigate");
-		mLogout = new JMenuItem("logout");
-		mCreate = new JMenuItem("Create Account");
-		
-		
-		menuBar.add(navigate);
-		//menuBar.add(help);
-		//menuBar.add(info);
-		menuBar.add(this.buyers);
-		menuBar.add(this.sellers);
-		
-		navigate.add(mLogout);
-		navigate.add(mCreate);
-			
-		menuBar.setVisible(true);
-		frame.setJMenuBar(menuBar);
-    	
-    }
-    */
     
+	/**
+	 * processes a login attempt
+	 * @param email
+	 * @param password
+	 * @return boolean based on if the login attempt was successful or not
+	 */
 	public boolean loginAttempt(String email, String password){ //true if the username and pass match
 		
 		if(email.equals("admin@roccozon.com") && password.equals("admin")){
@@ -219,6 +148,12 @@ public class Interface {
 			return true;
 	}
 	
+	/**
+	 * looks up a user in the marketplace to see if they exist
+	 * @param email
+	 * @param password
+	 * @return the person that logged in
+	 */
 	public Person userLookup(String email, String password){
 		
 		for(Buyer buy : market.getBuyers()){
@@ -234,24 +169,22 @@ public class Interface {
 				return sell;
 			}
 		}
-		
+		JOptionPane.showMessageDialog(frame, "Invalid username or password.");
 		return null;
 	}
 	
+	/**
+	 * loads the login page
+	 */
 	public void loginPage(){
 		
 		user = null;
 		usernameLbl.setVisible(false);
 		passLbl.setVisible(false);
-		//https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
-		//https://docs.oracle.com/javase/tutorial/uiswing/layout/spring.html
-				
-		
 		//end menuBar
 			
 		//username
 		
-		//username.setLocation(100, 100);
 		username.setSize(new Dimension(100, 30));
 		layout.putConstraint(SpringLayout.WEST, username,
 		              100,
@@ -343,8 +276,6 @@ public class Interface {
 		panel.setLayout(layout);
 		panel.add(username);
 		panel.add(pass);
-		//panel.add(passLbl);
-		//panel.add(usernameLbl);
 		panel.add(login);
 		panel.add(createAcc);
 						
@@ -360,9 +291,16 @@ public class Interface {
 		
 	}
 	
+	/**
+	 * loads the buyer page
+	 */
 	public void buyerPage(){
 		
 		frame.setVisible(false);
+		
+		historyLbl = new JLabel("History");
+		historyLbl.setVisible(true);
+		panel.add(historyLbl);
 		
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
@@ -382,10 +320,10 @@ public class Interface {
 		}
 		
 		for (int i = 0; i < inventory.length; i++) {
-			items[i][0] = user.getInventory().get(i).getName();
-			items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
-			items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
-			items[i][3] = user.getInventory().get(i).getDescription();
+			inventory[i][0] = user.getInventory().get(i).getName();
+			inventory[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
+			inventory[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
+			inventory[i][3] = user.getInventory().get(i).getDescription();
 		}
 		
 		inventoryDisplay = new JTable(market.getInventory().size(), 4);
@@ -394,15 +332,37 @@ public class Interface {
 		history = new JTable(user.getInventory().size(), 4);
 		history.setModel(dtm1);
 		inventoryDisplay.setModel(dtm);
-		
+		history.setModel(dtm1);
 		
 		JScrollPane pane = new JScrollPane(inventoryDisplay);
 		pane.setPreferredSize(new Dimension(300, 200));
 		
+		JScrollPane historyPane = new JScrollPane(history);
+		historyPane.setPreferredSize(new Dimension(300, 200));
+		historyPane.setVisible(true);
+		panel.add(historyPane);
+		
+		
+		layout.putConstraint(SpringLayout.WEST, historyPane,
+		        60,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, historyPane,
+		        160,
+		        SpringLayout.NORTH, panel);
+
+		layout.putConstraint(SpringLayout.WEST, historyLbl,
+		        190,
+		        SpringLayout.WEST, panel);
+				
+		layout.putConstraint(SpringLayout.NORTH, historyLbl,
+		        125,
+		        SpringLayout.NORTH, panel);
+		
 		//scroll pane
 		
 		layout.putConstraint(SpringLayout.WEST, pane,
-		        375,
+		        415,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, pane,
@@ -415,7 +375,7 @@ public class Interface {
 		
 		//panel
 		layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
-		        375,
+		        415,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
@@ -423,7 +383,6 @@ public class Interface {
 		        SpringLayout.NORTH, panel);
 		
 		panel.add(pane);
-		//panel.add(inventoryDisplay);
 		//end panel
 		
 		usernameLbl.setText("Welcome " + user.getName() + "!");
@@ -432,7 +391,7 @@ public class Interface {
 		
 		//welcome lbl
 		layout.putConstraint(SpringLayout.WEST, usernameLbl,
-		        305,
+		        325,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, usernameLbl,
@@ -447,7 +406,7 @@ public class Interface {
 		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); //might need to change font size *****
 		
 		layout.putConstraint(SpringLayout.WEST, passLbl,
-		        477, //may need to change ***************************
+		        517, 
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, passLbl,
@@ -463,12 +422,14 @@ public class Interface {
 		usernameLbl.setVisible(true);
 		passLbl.setVisible(true);
 		
-		//frame.pack();
 		frame.setVisible(true);
 		panel.repaint();
 		frame.repaint();
 	}
 
+	/**
+	 * loads the admin page
+	 */
 	public void adminPage(){
 		
 		frame.setVisible(false);
@@ -566,11 +527,12 @@ public class Interface {
 		//seller table
 			
 			String[] sellerColNames = {"Name", "ID", "Email"};
-			String[][] sellers = new String[market.getInventory().size()][];
-			for(int i = 0; i < items.length; i++){
-				items[i][0] = market.getSellers().get(i).getName();
-				items[i][1] = Integer.toString(market.getSellers().get(i).getIdNumber());
-				items[i][2] = market.getSellers().get(i).getEmail();
+			String[][] sellers = new String[market.getSellers().size()][3];
+			
+			for(int i = 0; i < sellers.length; i++){
+				sellers[i][0] = market.getSellers().get(i).getName();
+				sellers[i][1] = Integer.toString(market.getSellers().get(i).getIdNumber());
+				sellers[i][2] = market.getSellers().get(i).getEmail();
 			}
 			
 			JTable sellerDisplay = new JTable(market.getSellers().size(), 3); 
@@ -598,11 +560,11 @@ public class Interface {
 			//buyer table
 
 			String[] buyerColNames = {"Name", "ID", "Email"};
-			String[][] buyers = new String[market.getInventory().size()][];
-			for(int i = 0; i < items.length; i++){
-				items[i][0] = market.getBuyers().get(i).getName();
-				items[i][1] = Integer.toString(market.getBuyers().get(i).getIdNumber());
-				items[i][2] = market.getBuyers().get(i).getEmail();
+			String[][] buyers = new String[market.getBuyers().size()][3];
+			for(int i = 0; i < buyers.length; i++){
+				buyers[i][0] = market.getBuyers().get(i).getName();
+				buyers[i][1] = Integer.toString(market.getBuyers().get(i).getIdNumber());
+				buyers[i][2] = market.getBuyers().get(i).getEmail();
 			}
 
 			JTable buyerDisplay = new JTable(market.getBuyers().size(), 3); 
@@ -637,7 +599,10 @@ public class Interface {
 		
 	}
 	
-	//do these two methods really need the argument??V^
+	
+	/**
+	 * loads the seller page
+	 */
 	public void sellerPage(){
 		
 		frame.setVisible(false);
@@ -684,7 +649,6 @@ public class Interface {
 		        SpringLayout.NORTH, panel);
 		
 		panel.add(pane);
-		//panel.add(inventoryDisplay);
 		//end panel
 		
 		usernameLbl.setText("Welcome " + user.getName() + "!");
@@ -727,6 +691,11 @@ public class Interface {
 		frame.setVisible(true);
 	}
 	
+	
+	/**
+	 * tries to create an account with the values in the text boxes
+	 * @return boolean based on if the accounts creation was successful or not
+	 */
 	public boolean createAccount(){
 		JOptionPane popup = new JOptionPane();
 		int largestID = 0; //nobody will have a negative ID
@@ -758,7 +727,6 @@ public class Interface {
 		
 		//add the create an account stuff
 		Object[] options = {"Buyer", "Seller"};
-		//int response = 
 		int choice = JOptionPane.showOptionDialog(//0 is buyer 1 is seller
 				frame, 
 			    "Are you a buyer or a seller?",
@@ -789,6 +757,9 @@ public class Interface {
 	
 	//**********VVVVVVVVVVVVVVVVVVVVVV*************
 	
+	/**
+	 * loads the seller's inventory in a JTable
+	 */
 	public void loadSellerInventory() {
 		if(user == null || !(user instanceof Seller)){
 			JOptionPane popup = new JOptionPane("Invalid User");
@@ -836,6 +807,9 @@ public class Interface {
 	
 	}
 	
+	/**
+	 * lets a seller change the quantity of an item they are selling
+	 */
 	public void addExistingItem() {
 		
 		if(user == null || !(user instanceof Seller)){
@@ -863,8 +837,13 @@ public class Interface {
 		else{
 			
 			try {
-				quantity = Integer.parseInt((String)JOptionPane.showInputDialog(frame, "How many of this item would you like to add?", ""));
+				quantity = Integer.parseInt((String)JOptionPane.showInputDialog(frame, "How many of this item are you selling?", ""));
 			} catch (Exception e) {
+				JOptionPane.showMessageDialog(frame, "Invalid quantity");
+				return;
+			}
+			
+			if(quantity < 0){
 				JOptionPane.showMessageDialog(frame, "Invalid quantity");
 				return;
 			}
@@ -877,7 +856,7 @@ public class Interface {
 					
 			}
 			
-			((Seller) user).updateQuantity(item.getIDNumber(), item.getQuantity() + quantity);
+			((Seller) user).updateQuantity(item.getIDNumber(), quantity);
 			sellerPage();
 		}
 		
@@ -885,6 +864,9 @@ public class Interface {
 		
 	}
 	
+	/**
+	 * allows a seller to add a new item they are selling
+	 */
 	public void addNewItem() {
 		
 		if(user == null || ! (user instanceof Seller)){
@@ -927,6 +909,9 @@ public class Interface {
 		sellerPage();
 	}
 	
+	/**
+	 * loads a JTable with items currently being sold on the market
+	 */
 	public void loadItemsToBuy() {
 
 		if(user == null || !(user instanceof Buyer)){
@@ -938,7 +923,6 @@ public class Interface {
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
 		String[][] items = new String[market.getInventory().size()][4];
-		//the market doesn't load the inventory*************
 		for(int i = 0; i < items.length; i++){
 			
 			items[i][0] = market.getInventory().get(i).getName();
@@ -955,6 +939,9 @@ public class Interface {
 	}
 
 	
+	/**
+	 * called when a user tries to buy an item
+	 */
 	public void buyItem() {
 		
 		if(user == null || !(user instanceof Buyer)){
@@ -1017,7 +1004,9 @@ public class Interface {
 		
 	}
 	
-	//needs to be testedVVVVVVVV*************
+	/**
+	 * loads a buyer's purchase history
+	 */
 	public void loadPurchaseHistory() {
 
 		if(user == null || !(user instanceof Buyer)){
@@ -1070,11 +1059,14 @@ public class Interface {
 		}
 	}
 	
-	//*******^^^^^^^^^^^^^^^^^^^^^^^^^^*************
     private class UserListener implements ActionListener {
 
         Interface face;
 
+        /**
+         * creates an instance of UserListener that listens to all objects on the given interface
+         * @param face
+         */
         public UserListener(Interface face) {
 
             this.face = face;
@@ -1083,27 +1075,17 @@ public class Interface {
             face.yourInventory.addActionListener(this);
             face.existingItem.addActionListener(this);
             face.newItem.addActionListener(this);
-            face.removeItem.addActionListener(this);
-            face.purchaseHistory.addActionListener(this);
-			face.shop.addActionListener(this);
-			face.mCreate.addActionListener(this);
 			face.mLogout.addActionListener(this);
 			face.purchase.addActionListener(this);
 
         }
-
+        
         @Override
         public void actionPerformed(ActionEvent e) {
         	
             	if (e.getSource() == face.login) {
                 	loginAttempt(username.getText(), pass.getText());
-                	
-                	//if(person == null){
-                	//	JOptionPane popup = new JOptionPane("Invalid login");
-                	//	popup.showMessageDialog(face.frame, "Invalid Login Information");
-                			
-                	//}
-                	
+                	                	
                 	if(face.user instanceof Seller){
                 		//face.user = person;
                 		face.sellerPage();
@@ -1118,9 +1100,6 @@ public class Interface {
             	else if(e.getSource() == face.createAcc){
             		face.createAccount();
             	}
-            	else if(e.getSource() == face.mCreate){
-            		face.loginPage();
-            	}
             	
             	else if(e.getSource() == face.yourInventory){
             		face.loadSellerInventory();
@@ -1133,19 +1112,7 @@ public class Interface {
             	else if(e.getSource() == face.newItem){
             		face.addNewItem();
             	}
-            	
-            	else if(e.getSource() == face.purchaseHistory){
-            		face.loadPurchaseHistory();
-            	}
-            	
-            	else if(e.getSource() == face.shop){
-            		face.loadItemsToBuy();
-            	}
-            	
-            	else if(e.getSource() == face.mCreate){
-            		face.loginPage();
-            	}
-            	
+            	            	
             	else if(e.getSource() == face.purchase){
             		face.buyItem();
             	}
