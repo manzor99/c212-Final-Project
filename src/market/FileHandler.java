@@ -78,18 +78,17 @@ public class FileHandler {
                 scanner.nextLine();
                 while (scanner.hasNextLine()) {
                     String[] line = scanner.nextLine().trim().split(",");
-                    list.add(new Product(Integer.valueOf(line[0]), Integer.valueOf(line[5]),
-                            Integer.valueOf(line[4]), line[1], line[2], Double.valueOf(line[3])));
-                    String[] lineInventory = line[4].split(":");
-
-                    if (!lineInventory.equals("[]")) {
-                        for (String s : lineInventory) {
-                            list.add(stringToProduct(s));
-                        }
+                    String lineInventory = Arrays.toString(line[4].split(":"));
+                    String[] splitInventory = lineInventory.split(";");
+                    
+                    for (String s : splitInventory) {
+                       list.add(stringToProduct(s)); 
                     }
+                    
                 }
             }
         } catch (FileNotFoundException | NumberFormatException e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         return list;
     }
@@ -113,7 +112,6 @@ public class FileHandler {
                 }
             }
         } catch (FileNotFoundException | NumberFormatException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
         }
 
         return list;
@@ -174,9 +172,8 @@ public class FileHandler {
      * @return Product version of String
      */
     private Product stringToProduct(String x) {
-        String newString = x.trim().substring(1, x.length() - 1);
-        String[] line = newString.split(":");
-
+        String newString = x.trim().replace("[", "").replace("]", "");
+        String[] line = newString.split(","); 
         Product p = new Product(Integer.valueOf(line[0].trim()),
                 Integer.valueOf(line[5].trim()), Integer.valueOf(line[4].trim()),
                 line[1].trim(), line[2].trim(), Double.valueOf(line[3].trim()));
