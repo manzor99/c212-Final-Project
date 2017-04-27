@@ -36,6 +36,7 @@ public class Interface {
     JButton createAcc;
     JLabel usernameLbl;
     JLabel passLbl;
+    JLabel inventory;
     UserListener listen;
     JTable inventoryDisplay;
     SpringLayout layout;
@@ -413,10 +414,10 @@ public class Interface {
 		//inventory label
 		passLbl.setText("Items being sold");
 		
-		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); //might need to change font size *****
+		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); 
 		
 		layout.putConstraint(SpringLayout.WEST, passLbl,
-		        327,
+		        410, ////edit ******************************************
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, passLbl,
