@@ -30,7 +30,7 @@ public class Buyer extends Person {
             if (p.getIDNumber() == id && p.getQuantity() > 0) {
                 tempP = p;
             	p.setQuantity(p.getQuantity() - 1);
-                f.updateProducts(inv);
+                //f.updateSellers(sellersList);
                 
                 for (int i = 0; i < personalInv.size(); i++) {
 					if(id == personalInv.get(i).getIDNumber()){

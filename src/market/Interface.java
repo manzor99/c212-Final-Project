@@ -37,10 +37,13 @@ public class Interface {
     JLabel usernameLbl;
     JLabel passLbl;
     JLabel inventory;
+    JLabel buyersLbl;
+    JLabel sellersLbl;
     UserListener listen;
     JTable inventoryDisplay;
+    JTable history;
     SpringLayout layout;
-
+    
     JMenuBar menuBar;
     
 	JMenu buyers;
@@ -202,6 +205,13 @@ public class Interface {
     */
     
 	public boolean loginAttempt(String email, String password){ //true if the username and pass match
+		
+		if(email.equals("admin@roccozon.com") && password.equals("admin")){
+			user = null; //idk what to make this equal to *******************
+			adminPage();
+			return true;
+		}
+		
 		if(userLookup(email, password) == null){
 			return false;
 		}
@@ -212,13 +222,17 @@ public class Interface {
 	public Person userLookup(String email, String password){
 		
 		for(Buyer buy : market.getBuyers()){
-			if(buy.getEmail().equals(email) && buy.getPassword().equals(password))
+			if(buy.getEmail().equals(email) && buy.getPassword().equals(password)){
+				user = buy;
 				return buy;
+			}
 		}
 		
 		for(Seller sell : market.getSellers()){
-			if(sell.getEmail().equals(email) && sell.getPassword().equals(password))
+			if(sell.getEmail().equals(email) && sell.getPassword().equals(password)){
+				user = sell;
 				return sell;
+			}
 		}
 		
 		return null;
@@ -249,7 +263,8 @@ public class Interface {
 		//end username
 		
 		//usernameLbl
-		
+		usernameLbl.setVisible(true);
+		panel.add(usernameLbl);
 		username.setPreferredSize(new Dimension(100, 30)); //rearrange to look nicer
 		usernameLbl.setPreferredSize(new Dimension(100, 30));
 					
@@ -278,7 +293,8 @@ public class Interface {
 		//end pass
 		
 		//passLbl
-		
+		passLbl.setVisible(true);
+		panel.add(passLbl);
 		passLbl.setLocation(0, 40);
 		passLbl.setPreferredSize(new Dimension(100, 30));
 				
@@ -327,8 +343,8 @@ public class Interface {
 		panel.setLayout(layout);
 		panel.add(username);
 		panel.add(pass);
-		panel.add(passLbl);
-		panel.add(usernameLbl);
+		//panel.add(passLbl);
+		//panel.add(usernameLbl);
 		panel.add(login);
 		panel.add(createAcc);
 						
@@ -351,7 +367,11 @@ public class Interface {
 		String[] colNames = {"Name", "Price", "Quantity", "Decription"};
 		
 		String[][] items = new String[market.getInventory().size()][4];
-		//the market doesn't load the inventory*************
+		String[][] inventory = new String[user.getInventory().size()][4];
+		
+		//JTable history
+	    //JLabel inventory;
+		
 		for(int i = 0; i < items.length; i++){
 			
 			items[i][0] = market.getInventory().get(i).getName();
@@ -361,8 +381,18 @@ public class Interface {
 			
 		}
 		
+		for (int i = 0; i < inventory.length; i++) {
+			items[i][0] = user.getInventory().get(i).getName();
+			items[i][1] = "$" + Double.toString(user.getInventory().get(i).getPrice());
+			items[i][2] = Integer.toString(user.getInventory().get(i).getQuantity());
+			items[i][3] = user.getInventory().get(i).getDescription();
+		}
+		
 		inventoryDisplay = new JTable(market.getInventory().size(), 4);
 		DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+		DefaultTableModel dtm1 = new DefaultTableModel(inventory  , colNames);
+		history = new JTable(user.getInventory().size(), 4);
+		history.setModel(dtm1);
 		inventoryDisplay.setModel(dtm);
 		
 		
@@ -372,7 +402,7 @@ public class Interface {
 		//scroll pane
 		
 		layout.putConstraint(SpringLayout.WEST, pane,
-		        220,
+		        375,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, pane,
@@ -385,7 +415,7 @@ public class Interface {
 		
 		//panel
 		layout.putConstraint(SpringLayout.WEST, inventoryDisplay,
-		        220,
+		        375,
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, inventoryDisplay,
@@ -414,10 +444,10 @@ public class Interface {
 		//inventory label
 		passLbl.setText("Items being sold");
 		
-		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); 
+		usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 18)); //might need to change font size *****
 		
 		layout.putConstraint(SpringLayout.WEST, passLbl,
-		        410, ////edit ******************************************
+		        477, //may need to change ***************************
 		        SpringLayout.WEST, panel);
 				
 		layout.putConstraint(SpringLayout.NORTH, passLbl,
@@ -433,10 +463,178 @@ public class Interface {
 		usernameLbl.setVisible(true);
 		passLbl.setVisible(true);
 		
-		frame.pack();
+		//frame.pack();
 		frame.setVisible(true);
 		panel.repaint();
 		frame.repaint();
+	}
+
+	public void adminPage(){
+		
+		frame.setVisible(false);
+				
+		//buyers/sellers lbls
+			buyersLbl = new JLabel("Buyers");
+			sellersLbl = new JLabel("Sellers");
+					
+			layout.putConstraint(SpringLayout.WEST, buyersLbl,
+			        115, 
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, buyersLbl,
+			        125,
+			        SpringLayout.NORTH, panel);
+				
+			layout.putConstraint(SpringLayout.WEST, sellersLbl,
+			        375, 
+			        SpringLayout.WEST, panel);
+						
+			layout.putConstraint(SpringLayout.NORTH, sellersLbl,
+			        125,
+			        SpringLayout.NORTH, panel);
+	
+			panel.add(buyersLbl);
+			panel.add(sellersLbl);
+		//buyers/sellers lbls
+		
+		
+				
+		//welcome lbl
+			panel.add(usernameLbl);
+			usernameLbl.setText("Welcome Admin!");
+			usernameLbl.setPreferredSize(new Dimension(200, 100));
+			usernameLbl.setFont(new Font(usernameLbl.getFont().getName(), Font.PLAIN, 24)); //might need to change font size *****
+			layout.putConstraint(SpringLayout.WEST, usernameLbl,
+			        295,
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, usernameLbl,
+			        25,
+			        SpringLayout.NORTH, panel);
+			usernameLbl.setVisible(true);
+			
+			
+		//end welcome		
+		
+			
+		//passlbl aka inventory
+			
+			passLbl.setText("Items");
+			
+			layout.putConstraint(SpringLayout.WEST, passLbl, 637, SpringLayout.WEST, panel);
+			layout.putConstraint(SpringLayout.NORTH, passLbl, 125, SpringLayout.NORTH, panel);
+			
+		//end passlbl
+			
+			
+			
+		//market inventory table aka pane
+			String[] colNames = {"Name", "Price", "Quantity", "Decription"};
+			String[][] items = new String[market.getInventory().size()][4];
+			for(int i = 0; i < items.length; i++){
+				items[i][0] = market.getInventory().get(i).getName();
+				items[i][1] = "$" + Double.toString(market.getInventory().get(i).getPrice());
+				items[i][2] = Integer.toString(market.getInventory().get(i).getQuantity());
+				items[i][3] = market.getInventory().get(i).getDescription();
+			}
+			
+			inventoryDisplay = new JTable(market.getInventory().size(), 4); //sorry for the magic number but its the number of attributes we need to display from the product class
+			DefaultTableModel dtm = new DefaultTableModel(items, colNames);
+			inventoryDisplay.setModel(dtm);
+			
+			
+			JScrollPane pane = new JScrollPane(inventoryDisplay);
+			pane.setPreferredSize(new Dimension(250, 200));
+			
+			pane.setVisible(true);
+			panel.add(pane);
+			
+			
+			layout.putConstraint(SpringLayout.WEST, pane,
+			        530, 
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, pane,
+			        160,
+			        SpringLayout.NORTH, panel);
+
+		//market inventory table
+		
+			
+			
+			
+		//seller table
+			
+			String[] sellerColNames = {"Name", "ID", "Email"};
+			String[][] sellers = new String[market.getInventory().size()][];
+			for(int i = 0; i < items.length; i++){
+				items[i][0] = market.getSellers().get(i).getName();
+				items[i][1] = Integer.toString(market.getSellers().get(i).getIdNumber());
+				items[i][2] = market.getSellers().get(i).getEmail();
+			}
+			
+			JTable sellerDisplay = new JTable(market.getSellers().size(), 3); 
+			DefaultTableModel sellerdtm = new DefaultTableModel(sellers, sellerColNames);
+			sellerDisplay.setModel(sellerdtm);
+			
+			
+			JScrollPane sellerPane = new JScrollPane(sellerDisplay);
+			sellerPane.setPreferredSize(new Dimension(250, 200));
+			
+			sellerPane.setVisible(true);
+			panel.add(sellerPane);
+			
+			
+			layout.putConstraint(SpringLayout.WEST, sellerPane,
+			        270, 
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, sellerPane,
+			        160,
+			        SpringLayout.NORTH, panel);
+			
+		//seller table
+			
+			//buyer table
+
+			String[] buyerColNames = {"Name", "ID", "Email"};
+			String[][] buyers = new String[market.getInventory().size()][];
+			for(int i = 0; i < items.length; i++){
+				items[i][0] = market.getBuyers().get(i).getName();
+				items[i][1] = Integer.toString(market.getBuyers().get(i).getIdNumber());
+				items[i][2] = market.getBuyers().get(i).getEmail();
+			}
+
+			JTable buyerDisplay = new JTable(market.getBuyers().size(), 3); 
+			DefaultTableModel buyerdtm = new DefaultTableModel(buyers, buyerColNames);
+			buyerDisplay.setModel(buyerdtm);
+
+
+			JScrollPane buyerPane = new JScrollPane(buyerDisplay);
+			buyerPane.setPreferredSize(new Dimension(250, 200));
+
+			buyerPane.setVisible(true);
+			panel.add(buyerPane);
+
+
+			layout.putConstraint(SpringLayout.WEST, buyerPane,
+			        10, 
+			        SpringLayout.WEST, panel);
+					
+			layout.putConstraint(SpringLayout.NORTH, buyerPane,
+			        160,
+			        SpringLayout.NORTH, panel);
+
+			//buyer table
+			
+		pass.setVisible(false);
+		username.setVisible(false);
+		login.setVisible(false);
+		createAcc.setVisible(false);
+			
+		panel.repaint();
+		frame.setVisible(true);
+		
 	}
 	
 	//do these two methods really need the argument??V^
@@ -533,8 +731,7 @@ public class Interface {
 		JOptionPane popup = new JOptionPane();
 		int largestID = 0; //nobody will have a negative ID
 		
-		if(username.getText() == null || ! (username.getText().contains("@") && username.getText().contains(".")) && pass.getText() == null){
-			
+		if(username.getText() == null || ! (username.getText().contains("@") && username.getText().contains(".")) && pass.getText() == null && ! username.getText().equals("admin@roccozon.com")){
 			popup.showMessageDialog(frame, "Invalid email");
 			return false;
 		}
@@ -899,21 +1096,21 @@ public class Interface {
         public void actionPerformed(ActionEvent e) {
         	
             	if (e.getSource() == face.login) {
-                	Person person = userLookup(username.getText(), pass.getText());
+                	loginAttempt(username.getText(), pass.getText());
                 	
-                	if(person == null){
-                		JOptionPane popup = new JOptionPane("Invalid login");
-                		popup.showMessageDialog(face.frame, "Invalid Login Information");
+                	//if(person == null){
+                	//	JOptionPane popup = new JOptionPane("Invalid login");
+                	//	popup.showMessageDialog(face.frame, "Invalid Login Information");
                 			
-                	}
+                	//}
                 	
-                	else if(person instanceof Seller){
-                		face.user = person;
+                	if(face.user instanceof Seller){
+                		//face.user = person;
                 		face.sellerPage();
                 	}
                 	
-                	else if(person instanceof Buyer){
-                		face.user = person;
+                	if(face.user instanceof Buyer){
+                		//face.user = person;
                 		face.buyerPage();
                 	}
                 	

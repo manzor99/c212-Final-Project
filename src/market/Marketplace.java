@@ -87,7 +87,7 @@ public class Marketplace implements Admin {
     public void addProduct(Product p) {
         inventory = f.fillInventory();
         inventory.add(p);
-        f.updateProducts(inventory);
+        //f.updateProducts(inventory);
     }
 
     /**
@@ -227,7 +227,7 @@ public class Marketplace implements Admin {
                 p.setQuantity(quantity);
             }
         }
-        f.updateProducts(inventory);
+        //f.updateProducts(inventory);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Marketplace implements Admin {
                 p.setPrice(price);
             }
         }
-        f.updateProducts(inventory);
+        //f.updateProducts(inventory);
     }
 
     /**
@@ -261,7 +261,7 @@ public class Marketplace implements Admin {
                 p.setName(name);
             }
         }
-        f.updateProducts(inventory);
+        //f.updateProducts(inventory);
     }
 
     /**
@@ -278,7 +278,7 @@ public class Marketplace implements Admin {
                 p.setDescription(description);
             }
         }
-        f.updateProducts(inventory);
+        //f.updateProducts(inventory);
     }
 
     /**
@@ -308,7 +308,7 @@ public class Marketplace implements Admin {
         return inventory;
     }
 
-    public FileHandler getFileHandler(){
-    	return this.f;
-    }
+	public FileHandler getFileHandler() {
+		return this.f;
+	}
 }
